@@ -1,1 +1,1 @@
-This is the conflict test file
+This is a modified conflict test file
