@@ -20,3 +20,16 @@ Have you ever wanted to play golf with a big group and all track all of the scor
 * Scores are displayed on the leaderboard page in order from best to worst
 * Weather forecast available on leaderboard page
 * Leaders in under-par scores available on leaderboard page
+
+### Technologies
+I will use the required technologies in the following ways.
+* **HTML** - Uses correct HTML structure for application. Three HTML pages. One for login, one for the main leaderboard page, and one for entering scores.
+*  **CSS** - Application styling that looks good on different screen sizes, uses good whitespace, color choice and contrast.
+*  **React** - Provides login, leaderboard display, display of leaders in under-par scores, and use of React for routing and components.
+*  **Service** - Backend service with endpoints for:
+    - login
+    - submitting scores
+    - retrieving weather information
+    - retrieving leaderboard status
+* **DB/Login** - Store users, scores, and tournament results in database. Register and login users. Credentials securely stored in database. Can't join tournaments and enter scores unless authenticated.
+*  **Websocket** - As each user enters a score, their score and current hole are broadcast to all other users.
