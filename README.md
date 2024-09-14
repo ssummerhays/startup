@@ -11,3 +11,12 @@ Have you ever wanted to play golf with a big group and all track all of the scor
 <img width="1101" alt="StartupPg1" src="https://github.com/user-attachments/assets/c1629d0b-7b58-46f9-b6e4-fc3167cc0b65">
 <img width="881" alt="StartupPg2" src="https://github.com/user-attachments/assets/85654e1d-68f6-436c-8d5a-40f64d6cd14b">
 <img width="1017" alt="StartupPg3" src="https://github.com/user-attachments/assets/29b44332-3a08-4f86-845e-eb3d31e4b6bb">
+
+### Key Features
+
+* Secure login over HTTPS
+* Ability to create a new tournament in different formats such as standard strokeplay, skins game, or stableford
+* Ability for users to enter their scores hole by hole
+* Scores are displayed on the leaderboard page in order from best to worst
+* Weather forecast available on leaderboard page
+* Leaders in under-par scores available on leaderboard page
