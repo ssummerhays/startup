@@ -1,4 +1,4 @@
-# Startup
+# Golf Leaderboard Application
 
 ## Specification Deliverable
 
