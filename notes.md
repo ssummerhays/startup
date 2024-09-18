@@ -3,8 +3,11 @@
 - The more you practice using git the easier it becomes, so get in a habit of utilizing git.
 
 ## AWS
-- IP: http://54.85.108.252
-- Command to ssh into server: ssh -i production.pem ubuntu@54.85.108.252
+- IP: 54.85.108.252
+- Command to ssh into server: ssh -i production.pem ubuntu@startup260.click
+
+## HTTPS
+- Site: https://startup260.click/
 
 ## HTML Structure
 - Links: a tag, href = link
