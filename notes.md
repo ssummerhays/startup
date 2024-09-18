@@ -6,4 +6,10 @@
 - IP: http://54.85.108.252
 - Command to ssh into server: ssh -i production.pem ubuntu@54.85.108.252
 
+## HTML Structure
+- Links: a tag, href = link
+- Images: img tag, src = link
+
+
+## README
 See [README](README.md)
