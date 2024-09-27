@@ -13,6 +13,10 @@
 - Links: a tag, href = link
 - Images: img tag, src = link
 
+## CSS Practice
+- .[class name] applies the css to the elements with that class
+- Use animation to make simple animations for different elements
+
 
 ## README
 See [README](README.md)
