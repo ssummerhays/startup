@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Leaderboard</title>
+    <link rel="icon" href="golfIcon.png"/>
   </head>
   <body>
     <header>
@@ -22,75 +23,97 @@
       <span>Player: John Smith</span> 
         <form action="addScore.html"><button>Add Score</button></form>
       <h2>The Masters - 4 players</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Place</th>
-            <th>Name</th>
-            <th>Score</th>
-            <th>Thru</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>John Smith</td>
-            <td>-3</td>
-            <td>15</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>James Johnson</td>
-            <td>-1</td>
-            <td>16</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>Matthew Jones</td>
-            <td>E</td>
-            <td>16</td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td>Eli Mitchell</td>
-            <td>+3</td>
-            <td>15</td>
-          </tr>
-        </tbody>
-      </table>
+      <div id="leaderboard">
+        <table>
+            <thead>
+            <tr>
+                <th>Place</th>
+                <th>Name</th>
+                <th>Score</th>
+                <th>Thru</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td>John Smith</td>
+                <td>-3</td>
+                <td>15</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>James Johnson</td>
+                <td>-1</td>
+                <td>16</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Matthew Jones</td>
+                <td>E</td>
+                <td>16</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Eli Mitchell</td>
+                <td>+3</td>
+                <td>15</td>
+            </tr>
+            </tbody>
+        </table>
+      </div>
+      
+      <div id="par-breaker-leaderboard">
+        <table> 
+            <thead>
+            <tr>
+                <th>Place</th>
+                <th>Name</th>
+                <th>Par Breakers</th>
+                
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td>John Smith</td>
+                <td>4</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Matthew Jones</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>James Johnson</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Eli Mitchell</td>
+                <td>0</td>
+            </tr>
+            </tbody>
+        </table>
+      </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Place</th>
-            <th>Name</th>
-            <th>Par Breakers</th>
-            
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>John Smith</td>
-            <td>4</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Matthew Jones</td>
-            <td>2</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>James Johnson</td>
-            <td>1</td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td>Eli Mitchell</td>
-            <td>0</td>
-          </tr>
-        </tbody>
-      </table>
+      <div id="weather-box">
+        <table>
+            <thead>
+                <tr>
+                    <th>Temperature</th>
+                    <th>Forecast</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>83°</td>
+                    <td><span>☀️</span>Sunny</td>
+                </tr>
+            </tbody>
+        </table>
+      </div>
+      
     </main>
     <footer>
       <hr />
