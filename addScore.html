@@ -8,7 +8,7 @@
   </head>
   <body>
     <header>
-      <h1>Add Score</h1>
+      <h1>The Golf Leaderboard</h1>
       <nav>
         <menu>
           <li><a href="index.html">Home</a></li>
@@ -21,18 +21,30 @@
     </header>
 
     <main>
-      <h1>Add a Score</h1>
-      <form method="get" action="leaderboard.html">
-        <div>
-          <label for="hole-number">Hole:</label>
-          <input type="number" id="hole-number" />
-        </div>
-        <div>
-          <label for="score">Score:</label>
-          <input type="number" id="score" />
-        </div>
-        <button type="submit">Submit</button>
-      </form>
+      <div>
+        <h2>Add a Score</h2>
+        <form method="get" action="leaderboard.html">
+          <div>
+            <label for="hole-number">Hole:</label>
+            <input type="number" id="hole-number" min="1" max="18"/>
+          </div>
+          <div>
+            <label for="score">Score:</label>
+            <input type="number" id="score" min="1"/>
+          </div>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+      <div>
+        <h2>Recent Scores</h2>
+        <ul>
+            <li>John birdied 15</li>
+            <li>James parred 16</li>
+            <li>Matthew bogeyed 16</li>
+            <li>Eli birdied 15</li>
+        </ul>
+      </div>
+
     </main>
     <footer>
       <hr />
