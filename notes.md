@@ -4,7 +4,7 @@
 
 ## AWS
 - IP: 54.85.108.252
-- Command to ssh into server: ssh -i production.pem ubuntu@startup260.click
+- Command to ssh into server: ```ssh -i ~/keys/production.pem ubuntu@startup260.click```
 
 ## HTTPS
 - Site: https://startup260.click/
@@ -14,8 +14,12 @@
 - Images: img tag, src = link
 
 ## CSS Practice
-- .[class name] applies the css to the elements with that class
+- ```.<class name>``` applies the css to the elements with that class
 - Use animation to make simple animations for different elements
+
+## HTML Deliverable
+- For deploying application use command: ```./deployFiles.sh -k ~/keys/production.pem -h yourdomain.click -s startup```
+- Use index.html for the main page of the application
 
 
 ## README
