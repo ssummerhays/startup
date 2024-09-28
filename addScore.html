@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home</title>
+    <title>Add Score</title>
     <link rel="icon" href="golfIcon.png" />
   </head>
   <body>
     <header>
-      <h1>Home</h1>
+      <h1>Add Score</h1>
       <nav>
         <menu>
           <li><a href="index.html">Home</a></li>
@@ -21,16 +21,17 @@
     </header>
 
     <main>
-      <h1>The Golf Leaderboard</h1>
-      <form method="get" action="newTournament.html">
+      <h1>Add a Score</h1>
+      <form method="get" action="leaderboard.html">
         <div>
-          <input type="text" placeholder="email@example.com" />
+          <label for="hole-number">Hole:</label>
+          <input type="number" id="hole-number" />
         </div>
         <div>
-          <input type="text" placeholder="password" />
+          <label for="score">Score:</label>
+          <input type="number" id="score" />
         </div>
-        <button type="submit">Login</button>
-        <button type="submit">Sign Up</button>
+        <button type="submit">Submit</button>
       </form>
     </main>
     <footer>
