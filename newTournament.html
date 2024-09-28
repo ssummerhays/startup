@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home</title>
+    <title>New Tournament</title>
     <link rel="icon" href="golfIcon.png" />
   </head>
   <body>
@@ -21,17 +21,27 @@
     </header>
 
     <main>
-      <h1>The Golf Leaderboard</h1>
-      <form method="get" action="newTournament.html">
-        <div>
-          <input type="text" placeholder="email@example.com" />
-        </div>
-        <div>
-          <input type="text" placeholder="password" />
-        </div>
-        <button type="submit">Login</button>
-        <button type="submit">Sign Up</button>
-      </form>
+      <div>
+        <h2>New Tournament</h2>
+        <form method="get" action="leaderboard.html">
+          <div>
+            <input type="text" placeholder="Tournament Name" />
+          </div>
+          <div>
+            <input type="number" placeholder="Max Players" />
+          </div>
+          <button type="submit">Create New Tournament</button>
+        </form>
+      </div>
+      <div>
+        <h2>Join Tournament</h2>
+        <form method="get" action="leaderboard.html">
+          <div>
+            <input type="text" placeholder="Tournament ID" />
+          </div>
+          <button type="submit">Join Tournament</button>
+        </form>
+      </div>
     </main>
     <footer>
       <hr />
