@@ -43,3 +43,14 @@ For this deliverable I built out the html structure of the application
 - [X] **Images** - The leaderboard page contains an image of the golf course that the tournament is at.
 - [X] **DB/Login** - Input box and submit button for login. Also scores on leaderboards are stored in DB.
 - [X] **WebSocket** - The scores on the leaderboard represent real time scores from the players. Additionally, recent scores on the add page represent the most recent real time scores from the players in the tournament.
+
+## CSS deliverable
+
+For this deliverable I properly styled the application into its final appearance.
+
+- [x] **Header, footer, and main content body**
+- [x] **Navigation elements** - I dropped the underlines and changed the color for anchor elements.
+- [x] **Responsive to window resizing** - My app looks great on all window sizes and devices
+- [x] **Application elements** - Used good contrast and whitespace
+- [x] **Application text content** - Consistent fonts
+- [X] **Application images** - Properly styled image that resizes based on the window size.
