@@ -12,8 +12,46 @@ main {
   flex: 1 calc(100vh - 110px);
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: start;
   justify-content: space-around;
+}
+
+.player-name {
+    font-weight: 500;
+    margin: 2%;
+}
+
+.leaderboards {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    font-style: italic;
+}
+
+h1 span {
+    font-size: smaller;
+    font-style: normal;
+}
+
+.course-info {
+    display: flex;
+    margin: 1em;
+}
+
+.weather-box {
+    padding-left: 5vh;
+}
+
+h5 span {
+    font-style: italic;
+}
+
+img {
+    height: auto; 
+    max-width: 45vw;
 }
 
 footer {
