@@ -15,7 +15,9 @@
       crossorigin="anonymous"
     />
   </head>
+
   <body style="background-color: rgb(71, 202, 158);">
+
     <header class="container-fluid">
       <nav class="navbar bg-dark fixed-top navbar-dark">
         <a class="navbar-brand" href="#">GolfLeaderboard<sup>&reg;</sup></a>
@@ -28,26 +30,26 @@
       </nav>
     </header>
 
-    <main>
-      <div>
+    <main class="container-fluid text-center">
+      <div class="new-tournament">
         <h2>Create New Tournament</h2>
         <form method="get" action="leaderboard.html">
-          <div>
-            <input type="text" placeholder="Tournament Name" />
+          <div class="input-group mb-3">
+            <input type="text" placeholder="Tournament Name" class="form-control"/>
           </div>
-          <div>
-            <input type="number" placeholder="Max Players" />
+          <div class="input-group">
+            <input type="number" placeholder="Max Players" class="form-control" min="1"/>
           </div>
-          <button type="submit">Create New Tournament</button>
+          <button class="btn btn-primary" type="submit">Create New Tournament</button>
         </form>
       </div>
-      <div>
+      <div class="join-tournament">
         <h2>Join Tournament</h2>
         <form method="get" action="leaderboard.html">
-          <div>
-            <input type="text" placeholder="Tournament ID" />
+          <div class="input-group">
+            <input class="form-control" type="text" placeholder="Tournament ID" />
           </div>
-          <button type="submit">Join Tournament</button>
+          <button class="btn btn-primary" type="submit">Join Tournament</button>
         </form>
       </div>
     </main>

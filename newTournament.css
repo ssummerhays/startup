@@ -11,9 +11,25 @@ header {
 main {
   flex: 1 calc(100vh - 110px);
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
+}
+
+.new-tournament {
+    margin-right: 5%;
+}
+
+.join-tournament {
+    margin-left: 5%;
+}
+
+.btn {
+    margin-top: 0.5em;
+}
+
+form {
+    margin-bottom: 20%;
 }
 
 footer {
