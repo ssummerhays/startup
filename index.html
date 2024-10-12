@@ -28,18 +28,24 @@
       </nav>
     </header>
 
-    <main>
-      <h1>The Golf Leaderboard</h1>
-      <form method="get" action="newTournament.html">
-        <div>
-          <input type="text" placeholder="email@example.com" />
-        </div>
-        <div>
-          <input type="password" placeholder="password" />
-        </div>
-        <button type="submit">Login</button>
-        <button type="submit">Sign Up</button>
-      </form>
+    <main class="container-fluid text-center">
+      <div>
+        <h1>GolfLeaderboard</h1>
+        <form method="get" action="newTournament.html">
+          <div class="input-group mb-3">
+            <input type="text" placeholder="email@example.com" class="form-control"/>
+          </div>
+          <div class="input-group mb-3">
+            <input type="password" placeholder="password" class="form-control"/>
+          </div>
+          <div>
+            <button class="btn btn-primary" type="submit">Login</button>
+            <button class="btn btn-secondary" type="submit">Sign Up</button>
+          </div>
+          
+        </form>
+      </div>
+      
     </main>
 
     <footer class="bg-dark">
