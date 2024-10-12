@@ -21,6 +21,10 @@ main {
     margin: 2%;
 }
 
+.player-title {
+    font-weight: 800;
+}
+
 h1 {
     font-style: italic;
     align-self: center;
@@ -53,6 +57,19 @@ div.leaderboards {
  .score, .thru {
     width: 10%;
  }
+
+ .par-breaker-leaderboard{
+    text-align: center;
+    table-layout: fixed;
+}
+
+.place {
+    width: 3vw;
+}
+
+.par-breakers {
+    width: 15vw;
+}
 
 .course-info {
     display: flex;
