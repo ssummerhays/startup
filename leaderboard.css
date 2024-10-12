@@ -21,14 +21,9 @@ main {
     margin: 2%;
 }
 
-.leaderboards {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 h1 {
     font-style: italic;
+    align-self: center;
 }
 
 h1 span {
@@ -36,13 +31,46 @@ h1 span {
     font-style: normal;
 }
 
+div.leaderboards {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding-left: 2%;
+    padding-right: 3%;
+}
+
+.main-leaderboard {
+    width: 60%;
+    margin-left: 2%;
+    table-layout: fixed;
+}
+
+.pos {
+    width: 10%;
+}
+
+ .score, .thru {
+    width: 10%;
+ }
+
 .course-info {
     display: flex;
-    margin: 1em;
+    flex-direction: column;
+    margin: 1.5em;
+    width: 100%;
+    padding-right: 2%;
+}
+
+.course-info div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .weather-box {
-    padding-left: 5vh;
+    margin-right: 3.5%;
 }
 
 h5 span {
@@ -51,7 +79,7 @@ h5 span {
 
 img {
     height: auto; 
-    max-width: 45vw;
+    max-width: 50%;
 }
 
 footer {
@@ -88,4 +116,13 @@ footer a {
   main {
     flex: 1 100vh;
   }
+}
+
+@media (max-width: 735px) {
+    .main-leaderboard {
+        width: 100%;
+    }
+    .par-breaker-leaderboard {
+        display: none
+    }
 }

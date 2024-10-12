@@ -35,17 +35,19 @@
         <span>Player: John Smith</span> 
         <form action="addScore.html"><button class="btn btn-primary btn-sm">Add Score</button></form>
       </div>
-      <div class="leaderboards">
-        <h1>The Masters: <span>4 Players</span></h1>
+      
+      <h1>The Masters: <span>4 Players</span></h1>
+      
 
-        <div id="leaderboard">
-          <table>
+      <div class="leaderboards">
+        <div class="main-leaderboard">
+          <table class="table table-dark table-hover table-striped-columns">
               <thead>
               <tr>
-                  <th>Place</th>
+                  <th class="pos">Pos</th>
                   <th>Name</th>
-                  <th>Score</th>
-                  <th>Thru</th>
+                  <th class="score">Score</th>
+                  <th class="thru">Thru</th>
               </tr>
               </thead>
               <tbody>
@@ -76,12 +78,12 @@
               </tbody>
           </table>
         </div>
-        
-        <div id="par-breaker-leaderboard">
-          <table> 
+      
+        <div class="par-breaker-leaderboard">
+          <table class="table table-dark table-sm table-hover table-striped-columns"> 
               <thead>
               <tr>
-                  <th>Place</th>
+                  <th>#</th>
                   <th>Name</th>
                   <th>Par Breakers</th>
                   
@@ -111,15 +113,14 @@
               </tbody>
           </table>
         </div>
+      </div>
 
-        <div class="course-info">
-          <div>
-            <h5>At <span>GolfCoursePlaceholder</span></h5>
-            <img src="golfCoursePlaceholder.png" />
-          </div>
-
+      <div class="course-info">
+          <h5>At <span>GolfCoursePlaceholder</span></h5>    
+        <div>
+          <img src="golfCoursePlaceholder.png" />
           <div class="weather-box">
-            <table>
+            <table class="table table-dark table-sm">
                 <thead>
                     <tr>
                         <th>Temperature</th>
@@ -134,8 +135,7 @@
                 </tbody>
             </table>
           </div>
-        </div>
-        
+        </div>  
       </div>
       
     </main>
