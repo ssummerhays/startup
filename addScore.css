@@ -11,9 +11,17 @@ header {
 main {
   flex: 1 calc(100vh - 110px);
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: space-around;
+}
+
+.player-name {
+    font-weight: 700;
+}
+
+h2 {
+    text-align: center;
 }
 
 footer {
