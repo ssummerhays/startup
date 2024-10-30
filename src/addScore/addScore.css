@@ -1,14 +1,4 @@
-body {
-  display: flex;
-  flex-direction: column;
-  min-width: 375px;
-}
-
-header {
-  flex: 0 80px;
-}
-
-main {
+.addScore-main {
   flex: 1 calc(100vh - 110px);
   display: flex;
   flex-direction: row;
