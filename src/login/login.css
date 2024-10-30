@@ -1,0 +1,22 @@
+.login-main {
+  flex: 1 calc(100vh - 110px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.h1-title {
+    font-style: normal;
+    font-size: calc(1.375rem + 1.5vw);
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+button {
+    margin-right: 1vw;
+}
