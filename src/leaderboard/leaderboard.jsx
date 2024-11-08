@@ -1,12 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './leaderboard.css'
 
 export function Leaderboard() {
   return (
     <main className='leaderboard-main'>
       <div className="player-name">
-        <span className="player-title">Player:</span><span> John Smith</span> 
-        <form action="addScore.html"><button className="btn btn-primary btn-sm">Add Score</button></form>
+        <div>
+          <span className="player-title">Player:</span><span> John Smith</span>
+        </div>
+        <Link to="/addScore"><button className="btn btn-primary btn-sm">Add Score</button></Link>
       </div>
       
       <h1>The Masters: <span>4 Players</span></h1>
