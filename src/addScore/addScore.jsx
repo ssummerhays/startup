@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './addScore.css';
 
 export function AddScore() {
@@ -15,7 +16,8 @@ export function AddScore() {
             <label for="score">Score</label>
             <input type="number" id="score" className="input-group mb-3" min="1" max="99"/>
           </div>
-          <button className="btn btn-primary" type="submit">Submit</button>
+          <Link to="/leaderboard"><button className="btn btn-primary" type="submit">Submit</button></Link>
+          
         </form>
       </div>
       <div>
