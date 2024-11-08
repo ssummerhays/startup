@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './newTournament.css'
 
 export function NewTournament() {
@@ -13,7 +14,9 @@ export function NewTournament() {
             <div className="input-group">
                 <input type="number" placeholder="Max Players" className="form-control" min="1"/>
             </div>
-            <button className="btn btn-primary" type="submit">Create New Tournament</button>
+            <Link to="/leaderboard">
+                <button className="btn btn-primary" type="submit">Create New Tournament</button>
+            </Link>
             </form>
         </div>
         <div className="join-tournament">
@@ -22,7 +25,10 @@ export function NewTournament() {
             <div className="input-group">
                 <input className="form-control" type="text" placeholder="Tournament ID" />
             </div>
-            <button className="btn btn-primary" type="submit">Join Tournament</button>
+            <Link to="/leaderboard">
+                <button className="btn btn-primary" type="submit">Join Tournament</button>
+            </Link>
+            
             </form>
         </div>
     </main>
