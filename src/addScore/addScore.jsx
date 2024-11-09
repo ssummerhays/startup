@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { RecentScores } from './recentScores';
 import './addScore.css';
 
 export function AddScore() {
@@ -13,8 +14,8 @@ export function AddScore() {
             <input className="input-group mb-3" type="number" id="hole-number" min="1" max="18"/>
           </div>
           <div>
-            <label for="score">Score</label>
-            <input type="number" id="score" className="input-group mb-3" min="1" max="99"/>
+            <label for="score">Score to Par</label>
+            <input type="number" id="score" className="input-group mb-3" min="-4" max="10"/>
           </div>
           <Link to="/leaderboard"><button className="btn btn-primary" type="submit">Submit</button></Link>
           
@@ -22,10 +23,7 @@ export function AddScore() {
       </div>
       <div>
         <h2>Recent Scores</h2>
-        <div><span className="player-name">John</span> birdied 15</div>
-        <div><span className="player-name">James</span> parred 16</div>
-        <div><span className="player-name">Matthew</span> bogeyed 16</div>
-        <div><span className="player-name">Eli</span> birdied 15</div>
+        <RecentScores />
       </div>
 
     </main>
