@@ -68,7 +68,16 @@ export default function App() {
                     />
                     } 
                 />
-                <Route path='/leaderboard' element={<Leaderboard />} />
+                <Route 
+                    path='/leaderboard' 
+                    element={
+                    <Leaderboard 
+                        userName={userName}
+                        tournamentName={tournamentName}
+                        maxPlayers={maxPlayers}
+                    />
+                    } 
+                />
                 <Route path='/addScore' element={<AddScore />} />
                 <Route path='*' element={<NotFound />} />
             </Routes>
