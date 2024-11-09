@@ -14,6 +14,9 @@ export default function App() {
   const [email, setEmail] = React.useState(localStorage.getItem('email') || '');
   const currentAuthState = userName ? AuthState.Authenticated : AuthState.Unauthenticated;
   const [authState, setAuthState] = React.useState(currentAuthState);
+  const [tournamentName, setTournamentName] = React.useState(localStorage.getItem('tournamentName') || '');
+  const [maxPlayers, setMaxPlayers] = React.useState(localStorage.getItem('maxPlayers') || '');
+
   return (
     <BrowserRouter>
         <div className='body'>
@@ -52,7 +55,19 @@ export default function App() {
                     }
                     exact
                 />
-                <Route path='/newTournament' element={<NewTournament />} />
+                <Route 
+                    path='/newTournament' 
+                    element={
+                    <NewTournament 
+                        tournamentName={tournamentName}
+                        maxPlayers={maxPlayers}
+                        onNewTournament={(tournamentName, maxPlayers) => {
+                            setTournamentName(tournamentName);
+                            setMaxPlayers(maxPlayers);
+                        }}
+                    />
+                    } 
+                />
                 <Route path='/leaderboard' element={<Leaderboard />} />
                 <Route path='/addScore' element={<AddScore />} />
                 <Route path='*' element={<NotFound />} />

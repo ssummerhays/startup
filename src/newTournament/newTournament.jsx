@@ -1,35 +1,44 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
 import './newTournament.css'
 
-export function NewTournament() {
+export function NewTournament(props) {
+  const [tournamentName, setTournamentName] = React.useState(props.tournamentName);
+  const [maxPlayers, setMaxPlayers] = React.useState(props.maxPlayers);
+
+  const navigate = useNavigate();
+
+  async function createNewTournament() {
+    localStorage.setItem('tournamentName', tournamentName);
+    localStorage.setItem('maxPlayers', maxPlayers)
+    props.onNewTournament(tournamentName, maxPlayers);
+    navigate('/leaderboard')
+  }
+  async function joinTournament() {
+    localStorage.setItem('tournamentName', tournamentName);
+    props.onNewTournament(tournamentName, maxPlayers);
+    navigate('/leaderboard')
+  }
+
   return (
     <main className='newTournament-main'>
         <div className="new-tournament">
             <h2>Create New Tournament</h2>
-            <form method="get" action="leaderboard.html">
             <div className="input-group mb-3">
-                <input type="text" placeholder="Tournament Name" className="form-control"/>
+                <input type="text" placeholder="Tournament Name" className="form-control" value={tournamentName} onChange={(e) => setTournamentName(e.target.value)}/>
             </div>
             <div className="input-group">
-                <input type="number" placeholder="Max Players" className="form-control" min="1"/>
+                <input type="number" placeholder="Max Players" className="form-control" min="1" value={maxPlayers} onChange={(e) => setMaxPlayers(e.target.value)}/>
             </div>
-            <Link to="/leaderboard">
-                <button className="btn btn-primary" type="submit">Create New Tournament</button>
-            </Link>
-            </form>
+            <Button variant="primary" onClick={() => createNewTournament()} disabled={!tournamentName || !maxPlayers}>Create New Tournament</Button>
         </div>
         <div className="join-tournament">
             <h2>Join Tournament</h2>
-            <form method="get" action="leaderboard.html">
             <div className="input-group">
-                <input className="form-control" type="text" placeholder="Tournament ID" />
+                <input className="form-control" type="text" placeholder="Tournament Name" value={tournamentName} onChange={(e) => setTournamentName(e.target.value)}/>
             </div>
-            <Link to="/leaderboard">
-                <button className="btn btn-primary" type="submit">Join Tournament</button>
-            </Link>
-            
-            </form>
+            <Button variant='primary' onClick={() => joinTournament()} disabled={!tournamentName}>Join Tournament</Button>
         </div>
     </main>
   );
