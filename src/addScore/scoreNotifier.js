@@ -29,6 +29,7 @@ class ScoreEventNotifier {
       if (this.holeNumber === 18) {
         this.broadcastEvent(userName, ScoreEvent.roundEnd, this.holeNumber, score, this.totalScore);
         this.holeNumber = 1;
+        this.totalScore = 0;
       } else {
         this.broadcastEvent(userName, ScoreEvent.holeEnd, this.holeNumber, score, this.totalScore);
         this.holeNumber += 1;
