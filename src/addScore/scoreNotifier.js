@@ -17,22 +17,23 @@ class ScoreEventNotifier {
   events = [];
   handlers = [];
   holeNumber = 1;
+  totalScore = 0;
 
   constructor() {
     // Simulate chat messages that will eventually come over WebSocket
     setInterval(() => {
       const score = Math.floor(Math.random() * 7 - 2);
-      const totalScore = Math.floor(Math.random() * 25 - 6);
+      this.totalScore += score;
       
       const userName = 'Fake User';
       if (this.holeNumber === 18) {
-        this.broadcastEvent(userName, ScoreEvent.roundEnd, this.holeNumber, score, totalScore);
+        this.broadcastEvent(userName, ScoreEvent.roundEnd, this.holeNumber, score, this.totalScore);
         this.holeNumber = 1;
       } else {
-        this.broadcastEvent(userName, ScoreEvent.holeEnd, this.holeNumber, score, totalScore);
+        this.broadcastEvent(userName, ScoreEvent.holeEnd, this.holeNumber, score, this.totalScore);
         this.holeNumber += 1;
       }
-    }, 5000);
+    }, 2000);
   }
 
   broadcastEvent(from, type, hole, score, totalScore) {
