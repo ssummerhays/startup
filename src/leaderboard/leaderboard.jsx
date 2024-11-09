@@ -2,17 +2,45 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './leaderboard.css'
 
-export function Leaderboard() {
+export function Leaderboard({userName, tournamentName, maxPlayers }) {
+  const [scores, setScores] = React.useState([])
+
+  React.useEffect(() => {
+    const scoresText = localStorage.getItem('scores');
+    if (scoresText) {
+      setScores(JSON.parse(scoresText));
+    }
+  }, []);
+
+  const scoreRows = [];
+  if (scores.length) {
+    for (const [i, score] of scores.entries()) {
+      scoreRows.push(
+        <tr key={i+1}>
+          <td>{i+1}</td>
+          <td>{score.name}</td>
+          <td>{score.score}</td>
+          <td>{score.hole}</td>
+        </tr>
+      );
+    }
+  } else {
+    scoreRows.push(
+      <tr key='0'>
+        <td colSpan='4'>No Score Data Available</td>
+      </tr>
+    );
+  }
   return (
     <main className='leaderboard-main'>
       <div className="player-name">
         <div>
-          <span className="player-title">Player:</span><span> John Smith</span>
+          <span className="player-title">Player:</span><span> {userName}</span>
         </div>
         <Link to="/addScore"><button className="btn btn-primary btn-sm">Add Score</button></Link>
       </div>
       
-      <h1>The Masters: <span>4 Players</span></h1>
+      <h1>{tournamentName}: <span>{maxPlayers} Player Max</span></h1>
       
 
       <div className="leaderboards">
