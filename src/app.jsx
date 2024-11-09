@@ -8,6 +8,7 @@ import { NewTournament } from './newTournament/newTournament';
 import { Leaderboard } from './leaderboard/leaderboard';
 import { AddScore } from './addScore/addScore';
 import { AuthState } from './login/authState';
+import { ScoreEvent, ScoreNotifier } from './addScore/scoreNotifier';
 
 export default function App() {
   const [userName, setUserName] = React.useState(localStorage.getItem('userName') || '');
@@ -15,7 +16,9 @@ export default function App() {
   const currentAuthState = userName ? AuthState.Authenticated : AuthState.Unauthenticated;
   const [authState, setAuthState] = React.useState(currentAuthState);
   const [tournamentName, setTournamentName] = React.useState(localStorage.getItem('tournamentName') || '');
-  const [maxPlayers, setMaxPlayers] = React.useState(localStorage.getItem('maxPlayers') || '');
+  const [maxPlayers, setMaxPlayers] = React.useState(parseInt(localStorage.getItem('maxPlayers'), 10) || '');
+  const [holeNumber, setHoleNumber] = React.useState(parseInt(localStorage.getItem('holeNumber'), 10) || 1);
+  const [totalScore, setTotalScore] = React.useState(parseInt(localStorage.getItem('totalScore'), 10) || 0);
 
   return (
     <BrowserRouter>
@@ -78,7 +81,31 @@ export default function App() {
                     />
                     } 
                 />
-                <Route path='/addScore' element={<AddScore />} />
+                <Route 
+                    path='/addScore' 
+                    element={
+                    <AddScore
+                        userName={userName}
+                        totalScore={totalScore}
+                        holeNumber={holeNumber}
+                        onAddNewScore={(holeNumber, scoreToPar) => {
+                            setHoleNumber(holeNumber);
+                            const newTotalScore = scoreToPar + totalScore;
+                            localStorage.setItem('totalScore', newTotalScore);
+                            setTotalScore(newTotalScore);
+                            if (holeNumber === 18) {
+                                ScoreNotifier.broadcastEvent(userName, ScoreEvent.roundEnd, holeNumber, scoreToPar, newTotalScore);
+                            } else {
+                                ScoreNotifier.broadcastEvent(userName, ScoreEvent.holeEnd, holeNumber, scoreToPar, newTotalScore);
+                            }
+                        }}
+                        onClearTotalScore={() => {
+                            localStorage.setItem('totalScore', 0);
+                            setTotalScore(0);
+                        }}
+                    />
+                    } 
+                />
                 <Route path='*' element={<NotFound />} />
             </Routes>
 
