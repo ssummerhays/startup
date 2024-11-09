@@ -6,6 +6,20 @@
   justify-content: space-around;
 }
 
+.add-new-scores {
+  padding: 2 em
+}
+
+.player-messages {
+  padding: 2em;
+  padding-top: 0;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+}
+
 h2 {
     text-align: center;
 }
