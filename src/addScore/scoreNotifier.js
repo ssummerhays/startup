@@ -34,7 +34,7 @@ class ScoreEventNotifier {
         this.broadcastEvent(userName, ScoreEvent.holeEnd, this.holeNumber, score, this.totalScore);
         this.holeNumber += 1;
       }
-    }, 2000);
+    }, 5000);
   }
 
   broadcastEvent(from, type, hole, score, totalScore) {

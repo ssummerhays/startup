@@ -24,7 +24,7 @@ export function RecentScores() {
   function createMessageArray() {
     const messageArray = [];
     for (const [i, event] of events.entries()) {
-      let message = 'unknown';
+      let message = ' unknown';
       if (event.type === ScoreEvent.holeEnd) {
         if (event.score === 0) {
             message = ` scored E on hole ${event.hole}`;
@@ -55,6 +55,6 @@ export function RecentScores() {
   }
 
   return (
-      <div id='player-messages'>{createMessageArray()}</div>
+      <div className='player-messages'>{createMessageArray()}</div>
   );
 }
