@@ -2,15 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './leaderboard.css'
 
-export function Leaderboard({userName, tournamentName, maxPlayers, scores, parBreakers }) {
+export function Leaderboard(props) {
 
-  
   let scoreRows = [];
   let rawScoreData = [];
   let users = [];
-  if (scores.length) {
-    scores.sort((a, b) => b.hole - a.hole);
-    for (const [i, score] of scores.entries()) {
+  if (props.scores.length) {
+    props.scores.sort((a, b) => b.hole - a.hole);
+    for (const [i, score] of props.scores.entries()) {
       let thru = score.hole;
       if (score.hole === 18) {
         thru = 'F';
@@ -57,8 +56,8 @@ export function Leaderboard({userName, tournamentName, maxPlayers, scores, parBr
 
   const parBreakerRows = [];
   const rawParBreakData = [];
-  if (parBreakers.length) {
-    for (const [i, parBreaker] of parBreakers.entries()) {
+  if (props.parBreakers.length) {
+    for (const [i, parBreaker] of props.parBreakers.entries()) {
       const rawParBreak = {
         name: parBreaker.name,
         amount: parBreaker.amount
@@ -97,12 +96,12 @@ export function Leaderboard({userName, tournamentName, maxPlayers, scores, parBr
     <main className='leaderboard-main'>
       <div className="player-name">
         <div>
-          <span className="player-title">Player:</span><span> {userName}</span>
+          <span className="player-title">Player:</span><span> {props.userName}</span>
         </div>
         <Link to="/addScore"><button className="btn btn-primary btn-sm">Add Score</button></Link>
       </div>
       
-      <h1>{tournamentName}: <span>{maxPlayers} Player Max</span></h1>
+      <h1>{props.tournamentName}: <span>{props.maxPlayers} Player Max</span></h1>
       
 
       <div className="leaderboards">
@@ -136,7 +135,7 @@ export function Leaderboard({userName, tournamentName, maxPlayers, scores, parBr
       </div>
 
       <div className="course-info">
-          <h5>At <span>GolfCoursePlaceholder</span></h5>    
+          <h5>At <span>{props.course}</span></h5>    
         <div>
           <img src="golfCoursePlaceholder.png" />
           <div className="weather-box">

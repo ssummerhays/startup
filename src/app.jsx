@@ -15,15 +15,19 @@ export default function App() {
   const [email, setEmail] = React.useState(localStorage.getItem('email') || '');
   const currentAuthState = userName ? AuthState.Authenticated : AuthState.Unauthenticated;
   const [authState, setAuthState] = React.useState(currentAuthState);
+
   const [tournamentName, setTournamentName] = React.useState(localStorage.getItem('tournamentName') || '');
   const [maxPlayers, setMaxPlayers] = React.useState(parseInt(localStorage.getItem('maxPlayers'), 10) || '');
+  const [golfCourseName, setGolfCourseName] = React.useState(localStorage.getItem('courseName') || '');
+
   const [holeNumber, setHoleNumber] = React.useState(parseInt(localStorage.getItem('holeNumber'), 10) || 1);
-  const [totalScore, setTotalScore] = React.useState(parseInt(localStorage.getItem('totalScore'), 10) || 0);
+  const [totalScore, setTotalScore] = React.useState(parseInt(localStorage.getItem('totalScore'), 10) || 0)
 
   const [scores, setScores] = React.useState([]);
   const [parBreakers, setParBreakers] = React.useState([]);
 
   React.useEffect(() => {
+   //localStorage.clear();
     const scoresText = localStorage.getItem('scores');
     if (scoresText) {
       setScores(JSON.parse(scoresText));
@@ -85,9 +89,13 @@ export default function App() {
                     <NewTournament 
                         tournamentName={tournamentName}
                         maxPlayers={maxPlayers}
-                        onNewTournament={(tournamentName, maxPlayers) => {
+                        courseName={golfCourseName}
+                        onNewTournament={(tournamentName, maxPlayers, golfCourseName) => {
                             setTournamentName(tournamentName);
                             setMaxPlayers(maxPlayers);
+                            if (golfCourseName) {
+                                setGolfCourseName(golfCourseName);
+                            }
                         }}
                     />
                     } 
@@ -101,6 +109,7 @@ export default function App() {
                         maxPlayers={maxPlayers}
                         scores={scores}
                         parBreakers={parBreakers}
+                        course={golfCourseName}
                     />
                     } 
                 />
