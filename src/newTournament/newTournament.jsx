@@ -14,7 +14,7 @@ export function NewTournament(props) {
     localStorage.setItem('tournamentName', tournamentName);
     localStorage.setItem('maxPlayers', maxPlayers);
     localStorage.setItem('courseName', golfCourseName);
-    props.onNewTournament(tournamentName, maxPlayers, );
+    props.onNewTournament(tournamentName, maxPlayers, golfCourseName);
     navigate('/leaderboard')
   }
   async function joinTournament() {
