@@ -20,6 +20,23 @@ export default function App() {
   const [holeNumber, setHoleNumber] = React.useState(parseInt(localStorage.getItem('holeNumber'), 10) || 1);
   const [totalScore, setTotalScore] = React.useState(parseInt(localStorage.getItem('totalScore'), 10) || 0);
 
+  const [scores, setScores] = React.useState([]);
+  const [parBreakers, setParBreakers] = React.useState([]);
+
+  React.useEffect(() => {
+    const scoresText = localStorage.getItem('scores');
+    if (scoresText) {
+      setScores(JSON.parse(scoresText));
+    }
+  }, []);
+
+  React.useEffect(() => {
+    const parBreakersText = localStorage.getItem('parBreakers');
+    if (parBreakersText) {
+      setParBreakers(JSON.parse(parBreakersText));
+    }
+  }, []);
+
   return (
     <BrowserRouter>
         <div className='body'>
@@ -78,6 +95,8 @@ export default function App() {
                         userName={userName}
                         tournamentName={tournamentName}
                         maxPlayers={maxPlayers}
+                        scores={scores}
+                        parBreakers={parBreakers}
                     />
                     } 
                 />
@@ -93,10 +112,11 @@ export default function App() {
                             const newTotalScore = scoreToPar + totalScore;
                             localStorage.setItem('totalScore', newTotalScore);
                             setTotalScore(newTotalScore);
+
                             if (holeNumber === 18) {
-                                ScoreNotifier.broadcastEvent(userName, ScoreEvent.roundEnd, holeNumber, scoreToPar, newTotalScore);
+                                ScoreNotifier.broadcastEvent(userName, ScoreEvent.roundEnd, holeNumber, scoreToPar, newTotalScore, scores, true);
                             } else {
-                                ScoreNotifier.broadcastEvent(userName, ScoreEvent.holeEnd, holeNumber, scoreToPar, newTotalScore);
+                                ScoreNotifier.broadcastEvent(userName, ScoreEvent.holeEnd, holeNumber, scoreToPar, newTotalScore, scores, true);
                             }
                         }}
                         onClearTotalScore={() => {

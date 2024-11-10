@@ -2,28 +2,45 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './leaderboard.css'
 
-export function Leaderboard({userName, tournamentName, maxPlayers }) {
-  const [scores, setScores] = React.useState([])
+export function Leaderboard({userName, tournamentName, maxPlayers, scores, parBreakers }) {
 
-  React.useEffect(() => {
-    const scoresText = localStorage.getItem('scores');
-    if (scoresText) {
-      setScores(JSON.parse(scoresText));
-    }
-  }, []);
-
-  const scoreRows = [];
+  
+  let scoreRows = [];
+  let rawScoreData = [];
+  let users = [];
   if (scores.length) {
+    scores.sort((a, b) => b.hole - a.hole);
     for (const [i, score] of scores.entries()) {
+      let thru = score.hole;
+      if (score.hole === 18) {
+        thru = 'F';
+      }
+      if (!users.includes(score.name)) {
+        const data = {
+          dataName: score.name,
+          dataScore: score.totalScore,
+          dataThru: thru
+        }
+        rawScoreData.push(data);
+        users.push(score.name);
+      }
+    }
+    rawScoreData.sort((a, b) => {
+      const scoreA = parseInt(a.dataScore, 10);
+      const scoreB = parseInt(b.dataScore, 10);
+      return scoreA - scoreB;
+    });
+    for (const [i, data] of rawScoreData.entries()) {
       scoreRows.push(
-        <tr key={i+1}>
-          <td>{i+1}</td>
-          <td>{score.name}</td>
-          <td>{score.score}</td>
-          <td>{score.hole}</td>
+        <tr key={i + 1}>
+          <td>{i + 1}</td>
+          <td>{data.dataName}</td>
+          <td>{data.dataScore}</td>
+          <td>{data.dataThru}</td>
         </tr>
       );
     }
+
   } else {
     scoreRows.push(
       <tr key='0'>
@@ -31,6 +48,26 @@ export function Leaderboard({userName, tournamentName, maxPlayers }) {
       </tr>
     );
   }
+
+  const parBreakerRows = [];
+  if (parBreakers.length) {
+    for (const [i, parBreaker] of parBreakers.entries()) {
+      scoreRows.push(
+        <tr key={i+1}>
+          <td>{i+1}</td>
+          <td>{parBreaker.name}</td>
+          <td>{parBreaker.score}</td>
+        </tr>
+      );
+    }
+  } else {
+    parBreakerRows.push(
+      <tr key='0'>
+        <td colSpan='3'>No Par Breakers Yet</td>
+      </tr>
+    );
+  }
+
   return (
     <main className='leaderboard-main'>
       <div className="player-name">
@@ -54,32 +91,7 @@ export function Leaderboard({userName, tournamentName, maxPlayers }) {
                   <th className="thru">Thru</th>
               </tr>
               </thead>
-              <tbody>
-              <tr>
-                  <td>1</td>
-                  <td>John Smith</td>
-                  <td>-3</td>
-                  <td>15</td>
-              </tr>
-              <tr>
-                  <td>2</td>
-                  <td>James Johnson</td>
-                  <td>-1</td>
-                  <td>16</td>
-              </tr>
-              <tr>
-                  <td>3</td>
-                  <td>Matthew Jones</td>
-                  <td>E</td>
-                  <td>16</td>
-              </tr>
-              <tr>
-                  <td>4</td>
-                  <td>Eli Mitchell</td>
-                  <td>+3</td>
-                  <td>15</td>
-              </tr>
-              </tbody>
+              <tbody>{scoreRows}</tbody>
           </table>
         </div>
       
@@ -93,28 +105,7 @@ export function Leaderboard({userName, tournamentName, maxPlayers }) {
                     
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>John Smith</td>
-                    <td>4</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Matthew Jones</td>
-                    <td>2</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>James Johnson</td>
-                    <td>1</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>Eli Mitchell</td>
-                    <td>0</td>
-                </tr>
-              </tbody>
+              <tbody>{parBreakerRows}</tbody>
           </table>
         </div>
       </div>
