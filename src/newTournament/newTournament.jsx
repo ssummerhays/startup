@@ -38,7 +38,7 @@ export function NewTournament(props) {
             <div className="input-group">
                 <input className="form-control" type="text" placeholder="Tournament Name" value={tournamentName} onChange={(e) => setTournamentName(e.target.value)}/>
             </div>
-            <Button variant='primary' onClick={() => joinTournament()} disabled={!tournamentName}>Join Tournament</Button>
+            <Button variant='primary' onClick={() => joinTournament()} disabled={!tournamentName || !maxPlayers}>Join Tournament</Button>
         </div>
     </main>
   );
