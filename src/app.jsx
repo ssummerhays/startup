@@ -2,7 +2,7 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.css';
 
-import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, NavLink, Route, Routes, useNavigate } from 'react-router-dom';
 import { Login } from './login/login';
 import { NewTournament } from './newTournament/newTournament';
 import { Leaderboard } from './leaderboard/leaderboard';
@@ -33,7 +33,11 @@ export default function App() {
   React.useEffect(() => {
     const parBreakersText = localStorage.getItem('parBreakers');
     if (parBreakersText) {
-      setParBreakers(JSON.parse(parBreakersText));
+      try {
+        setParBreakers(JSON.parse(parBreakersText));
+      } catch (error) {
+        console.error(error);
+      }
     }
   }, []);
 
@@ -114,9 +118,9 @@ export default function App() {
                             setTotalScore(newTotalScore);
 
                             if (holeNumber === 18) {
-                                ScoreNotifier.broadcastEvent(userName, ScoreEvent.roundEnd, holeNumber, scoreToPar, newTotalScore, scores, true);
+                                ScoreNotifier.broadcastEvent(userName, ScoreEvent.roundEnd, holeNumber, scoreToPar, newTotalScore, scores, true, parBreakers);
                             } else {
-                                ScoreNotifier.broadcastEvent(userName, ScoreEvent.holeEnd, holeNumber, scoreToPar, newTotalScore, scores, true);
+                                ScoreNotifier.broadcastEvent(userName, ScoreEvent.holeEnd, holeNumber, scoreToPar, newTotalScore, scores, true, parBreakers);
                             }
                         }}
                         onClearTotalScore={() => {

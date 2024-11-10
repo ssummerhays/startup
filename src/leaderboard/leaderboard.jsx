@@ -31,11 +31,17 @@ export function Leaderboard({userName, tournamentName, maxPlayers, scores, parBr
       return scoreA - scoreB;
     });
     for (const [i, data] of rawScoreData.entries()) {
+      let printedScore = data.dataScore;
+      if (data.dataScore === 0) {
+        printedScore = 'E';
+      } else if (data.dataScore > 0) {
+        printedScore = "+" + data.dataScore;
+      }
       scoreRows.push(
         <tr key={i + 1}>
           <td>{i + 1}</td>
           <td>{data.dataName}</td>
-          <td>{data.dataScore}</td>
+          <td>{printedScore}</td>
           <td>{data.dataThru}</td>
         </tr>
       );
@@ -50,13 +56,26 @@ export function Leaderboard({userName, tournamentName, maxPlayers, scores, parBr
   }
 
   const parBreakerRows = [];
+  const rawParBreakData = [];
   if (parBreakers.length) {
     for (const [i, parBreaker] of parBreakers.entries()) {
-      scoreRows.push(
+      const rawParBreak = {
+        name: parBreaker.name,
+        amount: parBreaker.amount
+      }
+      rawParBreakData.push(rawParBreak);
+    }
+    rawParBreakData.sort((a, b) => {
+      const amountA = parseInt(a.amount, 10);
+      const amountB = parseInt(b.amount, 10);
+      return amountB - amountA;
+    });
+    for (const [i, data] of rawParBreakData.entries()) {
+      parBreakerRows.push(
         <tr key={i+1}>
           <td>{i+1}</td>
-          <td>{parBreaker.name}</td>
-          <td>{parBreaker.score}</td>
+          <td>{data.name}</td>
+          <td>{data.amount}</td>
         </tr>
       );
     }
@@ -67,6 +86,12 @@ export function Leaderboard({userName, tournamentName, maxPlayers, scores, parBr
       </tr>
     );
   }
+  parBreakerRows.sort((a, b) => {
+      const amountA = parseInt(a.props.children[1].props.children, 10);
+      const amountB = parseInt(b.props.children[1].props.children, 10);
+
+      return amountA - amountB;
+    });
 
   return (
     <main className='leaderboard-main'>
