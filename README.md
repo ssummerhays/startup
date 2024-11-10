@@ -44,7 +44,7 @@ For this deliverable I built out the html structure of the application
 - [X] **DB/Login** - Input box and submit button for login. Also scores on leaderboards are stored in DB.
 - [X] **WebSocket** - The scores on the leaderboard represent real time scores from the players. Additionally, recent scores on the add page represent the most recent real time scores from the players in the tournament.
 
-## CSS deliverable
+## CSS Deliverable
 
 For this deliverable I properly styled the application into its final appearance.
 
@@ -54,3 +54,15 @@ For this deliverable I properly styled the application into its final appearance
 - [x] **Application elements** - Used good contrast and whitespace
 - [x] **Application text content** - Consistent fonts
 - [X] **Application images** - Properly styled image that resizes based on the window size.
+
+## React Deliverable
+For this deliverable I used JavaScript and React so that the application completely works for a single user. I also added placeholders for future technology.
+
+- [x] **Bundled and transpiled** - done!
+- [x] **Components** - Login, NewTournament, Leaderboard, AddScore are all components with mocks for recent Score broadcasts.
+  - [x] **login** - When you press enter or the login button it takes you to the voting page.
+  - [x] **database** - Displayed the leaderboard and par breakers. Currently this is stored and retrieved from local storage, but it will be replaced with the database data later.
+  - [x] **WebSocket** - I used the setInterval function to periodically broadcast recent scores. This will be replaced with WebSocket messages later.
+  - [x] **application logic** - The order in the leaderboards is determined by the totalScores of the players and parBreakers order are determined by the most amount of par breakers.
+- [x] **Router** - Routing between login, newTournament, leaderboard, and addScore componenets.
+- [x] **Hooks** - Multiple components use class properties instead of `useState`.
