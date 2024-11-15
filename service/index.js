@@ -3,7 +3,7 @@ const uuid = require('uuid');
 const app = express();
 
 let users = {};
-let tournamentInfoList = [];
+let tournamentList = {};
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
@@ -19,7 +19,16 @@ apiRouter.post('/auth/create', async (req, res) => {
     if (user) {
         res.status(409).send({msg: "existing user"});
     } else {
-        const user = { email: req.body.email, name: req.body.name, password: req.body.password, recentScore: 0, totalScore: 0, currentHole: 1, token: uuid.v4() }
+        const user = { 
+            email: req.body.email,
+            name: req.body.name,
+            password: req.body.password,
+            recentScore: 0,
+            totalScore: 0,
+            parBreakers: 0,
+            currentHole: 1,
+            token: uuid.v4()
+        };
         users[user.email] = user;
         
         res.send({ token: user.token });
@@ -44,10 +53,31 @@ apiRouter.delete('/auth/logout', (req, res) => {
         delete user.token;
     }
     res.status(204).end();
-})
+});
 
 apiRouter.get('/users', (req, res) => {
     res.send(users);
+});
+
+apiRouter.post('/tournaments/create', (req, res) => {
+    const tournament = tournamentList[req.body.tournamentName];
+    if (tournament) {
+        res.status(409).send("existing tournament name");
+    } else {
+        const tournament = {
+            tournamentName: req.body.tournamentName,
+            courseName: req.body.courseName,
+            maxPlayers: req.body.maxPlayers,
+            players: []
+        };
+        tournamentList[req.body.tournamentName] = tournament;
+
+        res.send(tournament);
+    }
+});
+
+apiRouter.get('/tournaments', (req, res) => {
+    res.send(tournamentList);
 });
 
 app.listen(port, () => {
