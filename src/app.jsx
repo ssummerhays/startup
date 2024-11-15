@@ -85,20 +85,7 @@ export default function App() {
                 />
                 <Route 
                     path='/newTournament' 
-                    element={
-                    <NewTournament 
-                        tournamentName={tournamentName}
-                        maxPlayers={maxPlayers}
-                        courseName={golfCourseName}
-                        onNewTournament={(tournamentName, maxPlayers, golfCourseName) => {
-                            setTournamentName(tournamentName);
-                            setMaxPlayers(maxPlayers);
-                            if (golfCourseName) {
-                                setGolfCourseName(golfCourseName);
-                            }
-                        }}
-                    />
-                    } 
+                    element={ <NewTournament recentTournamentName={tournamentName}/> }
                 />
                 <Route 
                     path='/leaderboard' 
