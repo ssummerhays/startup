@@ -62,7 +62,7 @@ apiRouter.get('/users', (req, res) => {
 apiRouter.post('/tournaments/create', (req, res) => {
     const tournament = tournamentList[req.body.tournamentName];
     if (tournament) {
-        res.status(409).send("existing tournament name");
+        res.status(409).send({ msg: "existing tournament name" });
     } else {
         const tournament = {
             tournamentName: req.body.tournamentName,
