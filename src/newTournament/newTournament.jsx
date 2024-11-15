@@ -43,8 +43,10 @@ export function NewTournament(props) {
     const body = await response.json();
     
     if (response?.status === 200) {
-      if (body[joinName]) {
+      const tournament = body[joinName];
+      if (tournament) {
         localStorage.setItem('tournamentName', joinName);
+        props.onNewTournament(tournament.tournamentName);
         navigate('/leaderboard');
       } else {
         setDisplayError(`Error: no tournament with the name ${joinName} exists`);

@@ -85,7 +85,14 @@ export default function App() {
                 />
                 <Route 
                     path='/newTournament' 
-                    element={ <NewTournament recentTournamentName={tournamentName}/> }
+                    element={ 
+                    <NewTournament 
+                        recentTournamentName={tournamentName}
+                        onNewTournament={(tournamentName, maxPlayers, golfCourseName) => {
+                            setTournamentName(tournamentName);
+                        }}
+                    /> 
+                }
                 />
                 <Route 
                     path='/leaderboard' 
