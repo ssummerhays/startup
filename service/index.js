@@ -62,6 +62,7 @@ apiRouter.get('/users', (req, res) => {
 
 apiRouter.post('/tournaments/create', (req, res) => {
     const tournament = tournamentList[req.body.tournamentName];
+    const user = users[req.body.email];
     if (tournament) {
         res.status(409).send({ msg: "existing tournament name" });
     } else {
@@ -71,9 +72,21 @@ apiRouter.post('/tournaments/create', (req, res) => {
             maxPlayers: req.body.maxPlayers,
             players: []
         };
-        tournamentList[req.body.tournamentName] = tournament;
 
-        res.send(tournament);
+        if (!tournament.players.includes(req.body.email)) {
+            if (tournament.players.length === tournament.maxPlayers) {
+                res.status(409).send({ msg: "Error: This tournament is full. Please create a new tournament or join a different tournament"});
+            } else if (user.currentTournament === "") {
+                tournament.players.push(req.body.email);
+                user.currentTournament = req.body.tournamentName;
+                tournamentList[req.body.tournamentName] = tournament;
+                res.send(tournament);
+            } else {
+                res.status(409).send({ msg: "Already in a tournament. Finish your current tournament before starting another."})
+            }
+        } else {
+            res.send(tournament);
+        }
     }
 });
 
@@ -85,10 +98,12 @@ apiRouter.post('/tournaments/player', (req, res) => {
     const tournament = tournamentList[req.body.tournamentName];
     const user = users[req.body.email];
     if (!tournament.players.includes(req.body.email)) {
-        if (user.currentTournament === "") {
-             tournament.players.push(req.body.email);
-             user.currentTournament = req.body.tournamentName;
-             res.send({});
+        if (tournament.players.length >= tournament.maxPlayers) {
+            res.status(409).send({ msg: "Error: This tournament is full. Please create a new tournament or join a different tournament"});
+        } else if (user.currentTournament === "") {
+                tournament.players.push(req.body.email);
+                user.currentTournament = req.body.tournamentName;
+                res.send({});
         } else {
             res.status(409).send({ msg: "Already in a tournament. Finish your current tournament before starting another."})
         }
