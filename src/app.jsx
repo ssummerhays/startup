@@ -27,7 +27,7 @@ export default function App() {
   const [parBreakers, setParBreakers] = React.useState([]);
 
   React.useEffect(() => {
-   //localStorage.clear();
+    //localStorage.clear();
     const scoresText = localStorage.getItem('scores');
     if (scoresText) {
       setScores(JSON.parse(scoresText));
@@ -101,10 +101,8 @@ export default function App() {
                     <Leaderboard 
                         userName={userName}
                         tournamentName={tournamentName}
-                        maxPlayers={maxPlayers}
                         scores={scores}
                         parBreakers={parBreakers}
-                        course={golfCourseName}
                     />
                     } 
                 />
@@ -112,24 +110,16 @@ export default function App() {
                     path='/addScore' 
                     element={
                     <AddScore
-                        userName={userName}
-                        totalScore={totalScore}
-                        holeNumber={holeNumber}
+                        email={email}
                         onAddNewScore={(holeNumber, scoreToPar) => {
                             setHoleNumber(holeNumber);
                             const newTotalScore = scoreToPar + totalScore;
-                            localStorage.setItem('totalScore', newTotalScore);
-                            setTotalScore(newTotalScore);
 
                             if (holeNumber === 18) {
                                 ScoreNotifier.broadcastEvent(userName, ScoreEvent.roundEnd, holeNumber, scoreToPar, newTotalScore, scores, true, parBreakers);
                             } else {
                                 ScoreNotifier.broadcastEvent(userName, ScoreEvent.holeEnd, holeNumber, scoreToPar, newTotalScore, scores, true, parBreakers);
                             }
-                        }}
-                        onClearTotalScore={() => {
-                            localStorage.setItem('totalScore', 0);
-                            setTotalScore(0);
                         }}
                     />
                     } 
