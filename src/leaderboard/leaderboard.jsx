@@ -3,50 +3,49 @@ import { Link } from 'react-router-dom';
 import './leaderboard.css'
 
 export function Leaderboard(props) {
+  const [courseName, setCourseName] = React.useState("");
+  const [players, setPlayers] = React.useState([]);
+  const [scores, setScores] = React.useState([]);
+  const [parBreakers, setParBreakers] = React.useState([])
+  
+
+  React.useEffect(() => {
+    async function getTournamentData() {
+      const response = await fetch('/api/tournaments', {
+        method: 'GET',
+        headers: { 'content-type': 'application/json' }
+      });
+
+      const body = await response.json();
+      const tournament = body[props.tournamentName];
+      setCourseName(tournament.courseName);
+      setPlayers(tournament.players);
+      setScores(tournament.scores);
+      setParBreakers(tournament.parBreakers);
+    }
+
+    getTournamentData();
+  }, [props.tournamentName, players, scores, parBreakers] );
 
   let scoreRows = [];
-  let rawScoreData = [];
-  let users = [];
-  if (props.scores.length) {
-    props.scores.sort((a, b) => b.hole - a.hole);
-    for (const [i, score] of props.scores.entries()) {
-      let thru = score.hole;
-      if (score.hole === 18) {
-        thru = 'F';
-      }
-      if (!users.includes(score.name)) {
-        const data = {
-          dataName: score.name,
-          dataScore: score.totalScore,
-          dataThru: thru
-        }
-        rawScoreData.push(data);
-        users.push(score.name);
-      }
+  for (let i = 0; i < scores.length; i++) {
+    let score = scores[i];
+    let printedScore = score.total;
+    if (score.total === 0) {
+      printedScore = 'E';
+    } else if (score.total > 0) {
+      printedScore = `+${score.total}`
     }
-    rawScoreData.sort((a, b) => {
-      const scoreA = parseInt(a.dataScore, 10);
-      const scoreB = parseInt(b.dataScore, 10);
-      return scoreA - scoreB;
-    });
-    for (const [i, data] of rawScoreData.entries()) {
-      let printedScore = data.dataScore;
-      if (data.dataScore === 0) {
-        printedScore = 'E';
-      } else if (data.dataScore > 0) {
-        printedScore = "+" + data.dataScore;
-      }
-      scoreRows.push(
+    scoreRows.push(
         <tr key={i + 1}>
           <td>{i + 1}</td>
-          <td>{data.dataName}</td>
+          <td>{score.name}</td>
           <td>{printedScore}</td>
-          <td>{data.dataThru}</td>
+          <td>{score.thru}</td>
         </tr>
       );
-    }
-
-  } else {
+  }
+  if (scores.length === 0) {
     scoreRows.push(
       <tr key='0'>
         <td colSpan='4'>No Score Data Available</td>
@@ -54,43 +53,26 @@ export function Leaderboard(props) {
     );
   }
 
-  const parBreakerRows = [];
-  const rawParBreakData = [];
-  if (props.parBreakers.length) {
-    for (const [i, parBreaker] of props.parBreakers.entries()) {
-      const rawParBreak = {
-        name: parBreaker.name,
-        amount: parBreaker.amount
-      }
-      rawParBreakData.push(rawParBreak);
-    }
-    rawParBreakData.sort((a, b) => {
-      const amountA = parseInt(a.amount, 10);
-      const amountB = parseInt(b.amount, 10);
-      return amountB - amountA;
-    });
-    for (const [i, data] of rawParBreakData.entries()) {
-      parBreakerRows.push(
-        <tr key={i+1}>
-          <td>{i+1}</td>
-          <td>{data.name}</td>
-          <td>{data.amount}</td>
+  let parBreakerRows = [];
+  for (let i = 0; i < parBreakers.length; i++) {
+    let parBreaker = parBreakers[i];
+    parBreakerRows.push(
+        <tr key={i + 1}>
+          <td>{i + 1}</td>
+          <td>{parBreaker.name}</td>
+          <td>{parBreaker.parBreakers}</td>
         </tr>
       );
-    }
-  } else {
+  }
+  if (parBreakers.length === 0) {
     parBreakerRows.push(
       <tr key='0'>
         <td colSpan='3'>No Par Breakers Yet</td>
       </tr>
     );
   }
-  parBreakerRows.sort((a, b) => {
-      const amountA = parseInt(a.props.children[1].props.children, 10);
-      const amountB = parseInt(b.props.children[1].props.children, 10);
 
-      return amountA - amountB;
-    });
+  const playersStr = (players.length === 1)? 'player' : 'players'
 
   return (
     <main className='leaderboard-main'>
@@ -101,7 +83,7 @@ export function Leaderboard(props) {
         <Link to="/addScore"><button className="btn btn-primary btn-sm">Add Score</button></Link>
       </div>
       
-      <h1>{props.tournamentName}: <span>{props.maxPlayers} Player Max</span></h1>
+      <h1>{props.tournamentName}<span>: {players.length} {playersStr}</span></h1>
       
 
       <div className="leaderboards">
@@ -135,7 +117,7 @@ export function Leaderboard(props) {
       </div>
 
       <div className="course-info">
-          <h5>At <span>{props.course}</span></h5>    
+          <h5>At <span>{courseName}</span></h5>    
         <div>
           <img src="golfCoursePlaceholder.png" />
           <div className="weather-box">
