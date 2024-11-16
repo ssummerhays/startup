@@ -9,6 +9,8 @@ export function NewTournament(props) {
   const [joinName, setJoinName] = React.useState(props.recentTournamentName);
   const [maxPlayers, setMaxPlayers] = React.useState("");
   const [golfCourseName, setGolfCourseName] = React.useState("");
+  const [city, setCity] = React.useState("");
+  const [country, setCountry] = React.useState("");
   const [displayError, setDisplayError] = React.useState(null);
 
   const navigate = useNavigate();
@@ -17,6 +19,8 @@ export function NewTournament(props) {
     const body = {
       tournamentName: createName,
       courseName: golfCourseName,
+      city: city,
+      country: country,
       maxPlayers: maxPlayers,
       email: props.email
     }
@@ -86,11 +90,23 @@ export function NewTournament(props) {
                   <input type="number" placeholder="Max Players" className="form-control" min="1" value={maxPlayers} 
                   onChange={(e) => setMaxPlayers(e.target.value)}/>
               </div>
-              <div className="input-group">
+              <div className="input-group mb-3">
                   <input type="text" placeholder="Golf Course Name" className="form-control" value={golfCourseName} 
                   onChange={(e) => setGolfCourseName(e.target.value)}/>
               </div>
-              <Button variant="primary" onClick={() => createNewTournament()} disabled={!createName || !maxPlayers || !golfCourseName}>Create New Tournament</Button>
+              <div className='city-country'>
+                <div className="input-group city">
+                    <input type="text" placeholder="City" className="form-control" value={city} 
+                    onChange={(e) => setCity(e.target.value)}/>
+                </div>
+                <div className="input-group country">
+                    <input type="text" placeholder="Country" className="form-control" value={country} 
+                    onChange={(e) => setCountry(e.target.value)}/>
+                </div>
+              </div>
+              
+              <Button variant="primary" onClick={() => createNewTournament()} 
+              disabled={!createName || !maxPlayers || !golfCourseName || !city}>Create New Tournament</Button>
           </div>
           <div className="join-tournament">
               <h2>Join Tournament</h2>

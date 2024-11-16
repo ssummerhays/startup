@@ -10,6 +10,19 @@ main {
     margin-right: 5%;
 }
 
+.city-country {
+  display: flex;
+  flex-direction: row;
+}
+
+.city {
+  padding-right: 0.5em;
+}
+
+.country {
+  padding-left: 0.5em;
+}
+
 .join-tournament {
     margin-left: 5%;
 }
