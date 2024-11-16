@@ -14,40 +14,26 @@ export function NewTournament(props) {
   const navigate = useNavigate();
 
   async function createNewTournament() {
-    const tournament = {
+    const body = {
       tournamentName: createName,
       courseName: golfCourseName,
       maxPlayers: maxPlayers,
+      email: props.email
     }
     const response = await fetch('/api/tournaments/create', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(tournament)
+      body: JSON.stringify(body)
     });
 
     if (response?.status === 200) {
       localStorage.setItem('tournamentName', createName);
-      const bodyData = {
-        tournamentName: createName,
-        email: props.email,
-      };
-      const newResponse = await fetch('/api/tournaments/player', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(bodyData)
-      });
-      if (newResponse?.status === 200) {
-        navigate('/leaderboard');
-      } else {
-        const body = await newResponse.json();
-        setDisplayError(`Error: ${body.msg}`);
-      }
-      
+      props.onNewTournament(createName);
+      navigate('/leaderboard');
     } else {
       const body = await response.json();
       setDisplayError(`Error: ${body.msg}`);
     }
-    
   }
   async function joinTournament() {
     const response = await fetch('/api/tournaments', {
@@ -60,8 +46,6 @@ export function NewTournament(props) {
     if (response?.status === 200) {
       const tournament = body[joinName];
       if (tournament) {
-        localStorage.setItem('tournamentName', joinName);
-        props.onNewTournament(tournament.tournamentName);
 
         const bodyData = {
         tournamentName: joinName,
@@ -74,6 +58,8 @@ export function NewTournament(props) {
           body: JSON.stringify(bodyData)
         });
         if (newResponse?.status === 200) {
+          localStorage.setItem('tournamentName', joinName);
+          props.onNewTournament(tournament.tournamentName);
           navigate('/leaderboard');
         } else {
           const body = await newResponse.json();
