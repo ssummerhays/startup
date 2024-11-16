@@ -69,6 +69,8 @@ apiRouter.post('/tournaments/create', (req, res) => {
         const tournament = {
             tournamentName: req.body.tournamentName,
             courseName: req.body.courseName,
+            city: req.body.city,
+            country: req.body.country,
             maxPlayers: req.body.maxPlayers,
             players: [],
             scores: [],
