@@ -27,6 +27,7 @@ apiRouter.post('/auth/create', async (req, res) => {
             totalScore: 0,
             parBreakers: 0,
             currentHole: 1,
+            currentTournament: "",
             token: uuid.v4()
         };
         users[user.email] = user;
@@ -48,7 +49,7 @@ apiRouter.post('/auth/login', async (req, res) => {
 });
 
 apiRouter.delete('/auth/logout', (req, res) => {
-    const user = Object.values(users).find((u) => u.token === req.body.token);
+    const user = users[req.body.email];
     if (user) {
         delete user.token;
     }
@@ -79,6 +80,22 @@ apiRouter.post('/tournaments/create', (req, res) => {
 apiRouter.get('/tournaments', (req, res) => {
     res.send(tournamentList);
 });
+
+apiRouter.post('/tournaments/player', (req, res) => {
+    const tournament = tournamentList[req.body.tournamentName];
+    const user = users[req.body.email];
+    if (!tournament.players.includes(req.body.email)) {
+        if (user.currentTournament === "") {
+             tournament.players.push(req.body.email);
+             user.currentTournament = req.body.tournamentName;
+             res.send({});
+        } else {
+            res.status(409).send({ msg: "Already in a tournament. Finish your current tournament before starting another."})
+        }
+    } else {
+        res.send({});
+    }
+})
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
