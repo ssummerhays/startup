@@ -10,7 +10,6 @@ export function Authenticated(props) {
 
   function logout() {
     const email = localStorage.getItem('email');
-    console.log(email);
     fetch(`/api/auth/logout`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
