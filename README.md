@@ -66,3 +66,13 @@ For this deliverable I used JavaScript and React so that the application complet
   - [x] **application logic** - The order in the leaderboards is determined by the totalScores of the players and parBreakers order are determined by the most amount of par breakers.
 - [x] **Router** - Routing between login, newTournament, leaderboard, and addScore componenets.
 - [x] **Hooks** - Multiple components use class properties instead of `useState`.
+
+## Service deliverable
+
+For this deliverable I added backend endpoints that recieve score data, user data, and leaderboard data and returns the data to the various components.
+
+- [x] **Node.js/Express HTTP service** - done!
+- [x] **Static middleware for frontend** - done!
+- [X] **Calls to third party endpoints** - Leaderboard component calls a 3rd party weather api to get weather info for the city the tournament is in.
+- [x] **Backend service endpoints** - Endpoints for login / user data, and endpoints for tournament data that can be updated or that return data to populate the leaderboards with.
+- [x] **Frontend calls service endpoints** - I did this using the fetch function.
