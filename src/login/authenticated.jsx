@@ -9,9 +9,21 @@ export function Authenticated(props) {
   const navigate = useNavigate();
 
   function logout() {
-    localStorage.removeItem('userName');
-    localStorage.removeItem('email')
-    props.onLogout();
+    const email = localStorage.getItem('email');
+    console.log(email);
+    fetch(`/api/auth/logout`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: `{"email":"${email}"}`
+    })
+      .catch(() => {
+        // Logout failed. Assuming offline
+      })
+      .finally(() => {
+        localStorage.removeItem('userName');
+        localStorage.removeItem('email')
+        props.onLogout();
+      });
   }
 
   return (
