@@ -13,15 +13,11 @@ import { ScoreEvent, ScoreNotifier } from './addScore/scoreNotifier';
 export default function App() {
   const [userName, setUserName] = React.useState(localStorage.getItem('userName') || '');
   const [email, setEmail] = React.useState(localStorage.getItem('email') || '');
+  const [user, setUser] = React.useState({});
   const currentAuthState = userName ? AuthState.Authenticated : AuthState.Unauthenticated;
   const [authState, setAuthState] = React.useState(currentAuthState);
 
   const [tournamentName, setTournamentName] = React.useState(localStorage.getItem('tournamentName') || '');
-  const [maxPlayers, setMaxPlayers] = React.useState(parseInt(localStorage.getItem('maxPlayers'), 10) || '');
-  const [golfCourseName, setGolfCourseName] = React.useState(localStorage.getItem('courseName') || '');
-
-  const [holeNumber, setHoleNumber] = React.useState(parseInt(localStorage.getItem('holeNumber'), 10) || 1);
-  const [totalScore, setTotalScore] = React.useState(parseInt(localStorage.getItem('totalScore'), 10) || 0)
 
   const [scores, setScores] = React.useState([]);
   const [parBreakers, setParBreakers] = React.useState([]);
@@ -33,6 +29,21 @@ export default function App() {
       setScores(JSON.parse(scoresText));
     }
   }, []);
+
+  React.useEffect(() => {
+    async function getUserData() {
+      const response = await fetch('/api/users', {
+        method: 'GET',
+        headers: { 'content-type': 'application/json' }
+      });
+
+      const body = await response.json();
+      const user = body[props.email];
+      setUser(user);
+    }
+
+    getUserData();
+  }, [userName] );
 
   React.useEffect(() => {
     const parBreakersText = localStorage.getItem('parBreakers');
@@ -101,8 +112,6 @@ export default function App() {
                     <Leaderboard 
                         userName={userName}
                         tournamentName={tournamentName}
-                        scores={scores}
-                        parBreakers={parBreakers}
                     />
                     } 
                 />
@@ -112,8 +121,7 @@ export default function App() {
                     <AddScore
                         email={email}
                         onAddNewScore={(holeNumber, scoreToPar) => {
-                            setHoleNumber(holeNumber);
-                            const newTotalScore = scoreToPar + totalScore;
+                            const newTotalScore = scoreToPar + user.totalScore;
 
                             if (holeNumber === 18) {
                                 ScoreNotifier.broadcastEvent(userName, ScoreEvent.roundEnd, holeNumber, scoreToPar, newTotalScore, scores, true, parBreakers);
