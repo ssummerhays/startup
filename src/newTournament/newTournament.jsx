@@ -27,7 +27,22 @@ export function NewTournament(props) {
 
     if (response?.status === 200) {
       localStorage.setItem('tournamentName', createName);
-      navigate('/leaderboard');
+      const bodyData = {
+        tournamentName: createName,
+        email: props.email,
+      };
+      const newResponse = await fetch('/api/tournaments/player', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(bodyData)
+      });
+      if (newResponse?.status === 200) {
+        navigate('/leaderboard');
+      } else {
+        const body = await newResponse.json();
+        setDisplayError(`Error: ${body.msg}`);
+      }
+      
     } else {
       const body = await response.json();
       setDisplayError(`Error: ${body.msg}`);
@@ -47,7 +62,23 @@ export function NewTournament(props) {
       if (tournament) {
         localStorage.setItem('tournamentName', joinName);
         props.onNewTournament(tournament.tournamentName);
-        navigate('/leaderboard');
+
+        const bodyData = {
+        tournamentName: joinName,
+        email: props.email,
+        };
+
+        const newResponse = await fetch('/api/tournaments/player', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(bodyData)
+        });
+        if (newResponse?.status === 200) {
+          navigate('/leaderboard');
+        } else {
+          const body = await newResponse.json();
+          setDisplayError(`Error: ${body.msg}`);
+        }
       } else {
         setDisplayError(`Error: no tournament with the name ${joinName} exists`);
       }
