@@ -4,9 +4,13 @@ import './leaderboard.css'
 
 export function Leaderboard(props) {
   const [courseName, setCourseName] = React.useState("");
+  const [city, setCity] = React.useState("");
+  const [country, setCountry] = React.useState("");
   const [players, setPlayers] = React.useState([]);
   const [scores, setScores] = React.useState([]);
   const [parBreakers, setParBreakers] = React.useState([])
+  const [temp, setTemp] = React.useState('Loading...');
+  const [weather, setWeather] = React.useState('Loading...');
   
 
   React.useEffect(() => {
@@ -19,12 +23,30 @@ export function Leaderboard(props) {
       const body = await response.json();
       const tournament = body[props.tournamentName];
       setCourseName(tournament.courseName);
+      setCity(tournament.city);
+      setCountry(tournament.country);
       setPlayers(tournament.players);
       setScores(tournament.scores);
       setParBreakers(tournament.parBreakers);
     }
 
     getTournamentData();
+
+    async function getWeatherData() {
+      fetch(`https://wttr.in/${city}?format=j1`)
+        .then((response) => response.json())
+        .then((data) => {
+          let current = data.current_condition[0];
+          setTemp(current.temp_F);
+          setWeather(current.weatherDesc[0].value);
+        })
+        .catch();
+    }
+    
+    if (temp === 'Loading...') {
+      getWeatherData();
+    }
+
   }, [props.tournamentName, players, scores, parBreakers] );
 
   let scoreRows = [];
@@ -117,7 +139,7 @@ export function Leaderboard(props) {
       </div>
 
       <div className="course-info">
-          <h5>At <span>{courseName}</span></h5>    
+          <h5>At <span>{courseName}</span> in <span>{city}, {country}</span></h5>    
         <div>
           <img src="golfCoursePlaceholder.png" />
           <div className="weather-box">
@@ -130,8 +152,8 @@ export function Leaderboard(props) {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>83°</td>
-                        <td><span>☀️</span>Sunny</td>
+                        <td> {temp}° </td>
+                        <td> {weather} </td>
                     </tr>
                 </tbody>
             </table>
