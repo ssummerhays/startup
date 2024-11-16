@@ -124,7 +124,7 @@ apiRouter.post('/tournaments/score', (req, res) => {
         thru: req.body.hole
     }
     if (parseInt(score.thru, 10) !== parseInt(user.currentHole, 10) + 1) {
-        return res.status(409).send({ msg: `Hole is out of order. Please enter a score for hole ${score.thru}`})
+        return res.status(409).send({ msg: `Hole is out of order. Please enter a score for hole ${parseInt(user.currentHole, 10) + 1}`})
     }
     user.recentScore = req.body.recentScore;
     user.totalScore = score.total;
