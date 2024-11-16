@@ -88,7 +88,8 @@ export default function App() {
                     element={ 
                     <NewTournament 
                         recentTournamentName={tournamentName}
-                        onNewTournament={(tournamentName, maxPlayers, golfCourseName) => {
+                        email={email}
+                        onNewTournament={(tournamentName) => {
                             setTournamentName(tournamentName);
                         }}
                     /> 
