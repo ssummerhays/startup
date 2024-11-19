@@ -67,7 +67,7 @@ async function createTournament(tournamentName, courseName, city, country, maxPl
             $set: { currentTournament: tournamentName },
         };
 
-        await userCollection.update(filter, update);
+        await userCollection.updateOne(filter, update);
         tournamentCollection.insertOne(tournament)
 }
 
@@ -98,7 +98,7 @@ async function updateTournamentScores(tournamentName, score, parBreaker) {
             $set: { parBreakers: parBreakers },
         };
 
-        await tournamentCollection.update(parBreakerFilter, parBreakerUpdate);
+        await tournamentCollection.updateOne(parBreakerFilter, parBreakerUpdate);
     }
 
     found = false;
@@ -121,6 +121,33 @@ async function updateTournamentScores(tournamentName, score, parBreaker) {
         $set: { scores: scores },
     };
 
-    await tournamentCollection.update(filter, update);
+    await tournamentCollection.updateOne(filter, update);
+
+}
+
+async function updateUserScores(user, score) {
+    const totalBefore = user.totalScore;
+    const newTotal = score.total;
+    const recent = newTotal - totalBefore;
+
+    if (score.thru === 18) {
+        user.recentScore = 0;
+        user.totalScore = 0;
+        user.parBreakers = 0;
+        user.currentHole = 0;
+        user.currentTournament = "";
+    } else {
+        user.recentScore = recent;
+        user.totalScore = newTotal;
+        user.currentHole += 1;
+        if (recent < 0) {
+            user.parBreakers += 1;
+        }
+    }
+
+    const filter = { email: user.email };
+
+
+    await userCollection.replaceOne(filter, user);
 
 }
