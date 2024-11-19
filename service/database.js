@@ -28,3 +28,22 @@ function getUserByToken(token) {
 function getTournament(tournamentName) {
     return tournamentCollection.findOne({ tournamentName: tournamentName });
 }
+
+async function createUser(username, email, password) {
+    const passwordHash = bcrypt.hash(password, 10);
+
+    const user = { 
+            email: email,
+            name: username,
+            password: passwordHash,
+            recentScore: 0,
+            totalScore: 0,
+            parBreakers: 0,
+            currentHole: 0,
+            currentTournament: "",
+            token: uuid.v4()
+        };
+    await userCollection.insertOne(user);
+
+    return user;
+}
