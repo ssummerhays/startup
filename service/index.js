@@ -24,11 +24,11 @@ var apiRouter = express.Router();
 app.use(`/api`, apiRouter);
 
 apiRouter.post('/auth/create', async (req, res) => {
-    const user = DB.getUser;
+    const user = await DB.getUser(req.body.email);
     if (user === null) {
         res.status(409).send({msg: "existing user"});
     } else {
-        const user = DB.createUser(req.body.name, req.body.email, req.body.password);
+        const user = await DB.createUser(req.body.name, req.body.email, req.body.password);
 
         setAuthCookie(res, user.token);
         
@@ -37,11 +37,11 @@ apiRouter.post('/auth/create', async (req, res) => {
 });
 
 apiRouter.post('/auth/login', async (req, res) => {
-  const user = users[req.body.email];
+  const user = await DB.getUser(req.body.email);
   if (user) {
-    if (req.body.password === user.password) {
-      user.token = uuid.v4();
-      res.send({ token: user.token });
+    if (await bcrypt.compare(req.body.password, user.password)) {
+      setAuthCookie(res, user.token);
+      res.send({ id: user._id });
       return;
     }
   }
