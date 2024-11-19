@@ -21,7 +21,14 @@ export function Leaderboard(props) {
       });
 
       const body = await response.json();
-      const tournament = body[props.tournamentName];
+      let tournament = null;
+      for (let i = 0; i < body.length; i++) {
+        let current = body[i];
+        if (current.tournamentName == props.tournamentName) {
+          tournament = current;
+        }
+      }
+      
       setCourseName(tournament.courseName);
       setCity(tournament.city);
       setCountry(tournament.country);
@@ -58,12 +65,16 @@ export function Leaderboard(props) {
     } else if (score.total > 0) {
       printedScore = `+${score.total}`
     }
+    let printedHole = score.thru;
+    if (score.thru === 18) {
+      printedHole = 'F';
+    }
     scoreRows.push(
         <tr key={i + 1}>
           <td>{i + 1}</td>
           <td>{score.name}</td>
           <td>{printedScore}</td>
-          <td>{score.thru}</td>
+          <td>{printedHole}</td>
         </tr>
       );
   }
