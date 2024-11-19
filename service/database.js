@@ -17,24 +17,24 @@ const tournamentCollection = db.collection('tournament');
   process.exit(1);
 });
 
-function getUser(email) {
-    return userCollection.findOne({ email: email });
+async function getUser(email) {
+    return await userCollection.findOne({ email: email });
 }
 
-function getAllUsers() {
-    return userCollection.find({});
+async function getAllUsers() {
+    return await userCollection.find({}).toArray();
 }
 
-function getUserByToken(token) {
-    return userCollection.findOne({ token: token });
+async function getUserByToken(token) {
+    return await userCollection.findOne({ token: token });
 }
 
-function getTournament(tournamentName) {
-    return tournamentCollection.findOne({ tournamentName: tournamentName });
+async function getTournament(tournamentName) {
+    return await tournamentCollection.findOne({ tournamentName: tournamentName });
 }
 
-function getAllTournaments() {
-    return tournamentCollection.find({});
+async function getAllTournaments() {
+    return await tournamentCollection.find({}).toArray();
 }
 
 async function createUser(username, email, password) {
@@ -141,13 +141,13 @@ async function updateTournamentScores(tournamentName, score, parBreaker) {
 }
 
 async function addPlayer(tournamentName, email) {
-    const tournament = getTournament(tournamentName);
-    const player = getUser(email);
+    const tournament = await getTournament(tournamentName);
+    const player = await getUser(email);
 
     if (!tournament.players.includes(email)) {
         if (tournament.players.length >= tournament.maxPlayers) {
             return "max";
-        } else if (user.currentTournament === "") {
+        } else if (player.currentTournament === "") {
                 tournament.players.push(email);
                 player.currentTournament = tournamentName;
 
@@ -165,24 +165,29 @@ async function addPlayer(tournamentName, email) {
     }
 }
 
+async function resetUser(email) {
+    const user = await getUser(email);
+    user.recentScore = 0;
+    user.totalScore = 0;
+    user.parBreakers = 0;
+    user.currentHole = 0;
+    user.currentTournament = "";
+
+    const filter = { email: user.email };
+
+    await userCollection.replaceOne(filter, user);
+}
+
 async function updateUserScores(user, score) {
     const totalBefore = user.totalScore;
     const newTotal = score.total;
     const recent = newTotal - totalBefore;
 
-    if (score.thru === 18) {
-        user.recentScore = 0;
-        user.totalScore = 0;
-        user.parBreakers = 0;
-        user.currentHole = 0;
-        user.currentTournament = "";
-    } else {
-        user.recentScore = recent;
-        user.totalScore = newTotal;
-        user.currentHole += 1;
-        if (recent < 0) {
-            user.parBreakers += 1;
-        }
+    user.recentScore = recent;
+    user.totalScore = newTotal;
+    user.currentHole += 1;
+    if (recent < 0) {
+        user.parBreakers += 1;
     }
 
     const filter = { email: user.email };
@@ -196,6 +201,7 @@ module.exports = {
     getUser,
     getAllUsers,
     getUserByToken,
+    resetUser,
     getTournament,
     getAllTournaments,
     createUser,
