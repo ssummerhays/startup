@@ -52,8 +52,8 @@ export function NewTournament(props) {
       if (tournament) {
 
         const bodyData = {
-        tournamentName: joinName,
-        email: props.email,
+          tournamentName: joinName,
+          email: props.email,
         };
 
         const newResponse = await fetch('/api/tournaments/player', {
