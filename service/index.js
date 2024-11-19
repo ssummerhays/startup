@@ -3,12 +3,8 @@ const bcrypt = require('bcrypt');
 const express = require('express');
 const app = express();
 const DB = require('./database.js');
-const { Db } = require('mongodb');
 
 const authCookieName = 'token';
-
-let users = {};
-let tournamentList = {};
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
@@ -25,7 +21,7 @@ app.use(`/api`, apiRouter);
 
 apiRouter.post('/auth/create', async (req, res) => {
     const user = await DB.getUser(req.body.email);
-    if (user === null) {
+    if (user !== null) {
         res.status(409).send({msg: "existing user"});
     } else {
         const user = await DB.createUser(req.body.name, req.body.email, req.body.password);
@@ -66,18 +62,19 @@ secureApiRouter.use(async (req, res, next) => {
   }
 });
 
-apiRouter.get('/users', (req, res) => {
+secureApiRouter.get('/users', (req, res) => {
+    const users = DB.getAllUsers();
     res.send(users);
 });
 
-secureApiRouter.post('/tournaments/create', (req, res) => {
-    const tournament = DB.getTournament(req.body.tournamentName);
-    const user = DB.getUser(req.body.email);
-    if (tournament) {
+secureApiRouter.post('/tournaments/create', async (req, res) => {
+    const tournament = await DB.getTournament(req.body.tournamentName);
+    const user = await DB.getUser(req.body.email);
+    if (tournament !== null) {
         res.status(409).send({ msg: "existing tournament name" });
     } else {
         if (user.currentTournament === "") {
-            const tournament = DB.createTournament(
+            const tournament = await DB.createTournament(
                 req.body.tournamentName, 
                 req.body.courseName, 
                 req.body.city, 
@@ -92,12 +89,13 @@ secureApiRouter.post('/tournaments/create', (req, res) => {
     }
 });
 
-apiRouter.get('/tournaments', (req, res) => {
+secureApiRouter.get('/tournaments', (req, res) => {
+    const tournamentList = DB.getAllTournaments();
     res.send(tournamentList);
 });
 
-secureApiRouter.post('/tournaments/player', (req, res) => {
-    const result = DB.addPlayer(req.body.tournamentName, req.body.email);
+secureApiRouter.post('/tournaments/player', async (req, res) => {
+    const result = await DB.addPlayer(req.body.tournamentName, req.body.email);
 
     if (result === "max") {
         res.status(409).send({ msg: "Error: This tournament is full. Please create a new tournament or join a different tournament"});
@@ -108,8 +106,8 @@ secureApiRouter.post('/tournaments/player', (req, res) => {
     }
 })
 
-secureApiRouter.post('/tournaments/score', (req, res) => {
-    const user = DB.getUser(req.body.email);
+secureApiRouter.post('/tournaments/score', async (req, res) => {
+    const user = await DB.getUser(req.body.email);
     const total = user.totalScore + req.body.recentScore;
     const parBreaker = null;
     const score = {
@@ -128,14 +126,14 @@ secureApiRouter.post('/tournaments/score', (req, res) => {
         }
     }
 
-    const result = DB.updateTournamentScores(user.currentTournament, score, parBreaker);
-    DB.updateUserScores(user, score);
+    const result = await DB.updateTournamentScores(user.currentTournament, score, parBreaker);
+    await DB.updateUserScores(user, score);
 
     res.send(result);
 })
 
-apiRouter.get('/tournaments/score', (req, res) => {
-    const tournament = tournamentList[req.body.tournamentName];
+secureApiRouter.get('/tournaments/score', async (req, res) => {
+    const tournament = await DB.getTournament(req.body.tournamentName);
 
     const result = {
         scores: tournament.scores,
