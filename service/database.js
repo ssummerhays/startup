@@ -47,3 +47,26 @@ async function createUser(username, email, password) {
 
     return user;
 }
+
+async function createTournament(tournamentName, courseName, city, country, maxPlayers, email) {
+
+    const tournament = {
+            tournamentName: tournamentName,
+            courseName: courseName,
+            city: city,
+            country: country,
+            maxPlayers: maxPlayers,
+            players: [email],
+            scores: [],
+            parBreakers: []
+        };
+
+        const filter = { email: email };
+
+        const update = {
+            $set: { currentTournament: tournamentName },
+        };
+
+        await userCollection.update(filter, update);
+        tournamentCollection.insertOne(tournament)
+}
