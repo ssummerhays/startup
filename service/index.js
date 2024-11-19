@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const express = require('express');
 const app = express();
 const DB = require('./database.js');
+const { Db } = require('mongodb');
 
 const authCookieName = 'token';
 
@@ -23,24 +24,15 @@ var apiRouter = express.Router();
 app.use(`/api`, apiRouter);
 
 apiRouter.post('/auth/create', async (req, res) => {
-    const user = users[req.body.email];
-    if (user) {
+    const user = DB.getUser;
+    if (user === null) {
         res.status(409).send({msg: "existing user"});
     } else {
-        const user = { 
-            email: req.body.email,
-            name: req.body.name,
-            password: req.body.password,
-            recentScore: 0,
-            totalScore: 0,
-            parBreakers: 0,
-            currentHole: 0,
-            currentTournament: "",
-            token: uuid.v4()
-        };
-        users[user.email] = user;
+        const user = DB.createUser(req.body.name, req.body.email, req.body.password);
+
+        setAuthCookie(res, user.token);
         
-        res.send({ token: user.token });
+        res.send({ id: user._id });
     }
 });
 
@@ -206,7 +198,19 @@ apiRouter.get('/tournaments/score', (req, res) => {
         parBreakers: tournament.parBreakers
     }
     res.send(result);
-})
+});
+
+app.use((_req, res) => {
+  res.sendFile('index.html', { root: 'public' });
+});
+
+function setAuthCookie(res, authToken) {
+  res.cookie(authCookieName, authToken, {
+    secure: true,
+    httpOnly: true,
+    sameSite: 'strict',
+  });
+}
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
