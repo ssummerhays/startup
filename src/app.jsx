@@ -19,14 +19,6 @@ export default function App() {
 
   const [tournamentName, setTournamentName] = React.useState(localStorage.getItem('tournamentName') || '');
 
-  React.useEffect(() => {
-    //localStorage.clear();
-    const scoresText = localStorage.getItem('scores');
-    if (scoresText) {
-      setScores(JSON.parse(scoresText));
-    }
-  }, []);
-
   async function getUserData() {
     const response = await fetch('/api/users', {
       method: 'GET',
