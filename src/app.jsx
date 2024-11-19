@@ -39,7 +39,7 @@ export default function App() {
 
   React.useEffect(() => {
     getUserData();
-  }, [userName, user.totalScore] );
+  }, [userName] );
 
   async function resetPlayer() {
     const bodyData = {
