@@ -62,9 +62,13 @@ secureApiRouter.use(async (req, res, next) => {
   }
 });
 
-secureApiRouter.get('/users', (req, res) => {
-    const users = DB.getAllUsers();
+secureApiRouter.get('/users', async (req, res) => {
+    const users = await DB.getAllUsers();
     res.send(users);
+});
+
+secureApiRouter.post('/user/reset', async (req, res) => {
+    await DB.resetUser(req.body.email);
 });
 
 secureApiRouter.post('/tournaments/create', async (req, res) => {
@@ -89,8 +93,8 @@ secureApiRouter.post('/tournaments/create', async (req, res) => {
     }
 });
 
-secureApiRouter.get('/tournaments', (req, res) => {
-    const tournamentList = DB.getAllTournaments();
+secureApiRouter.get('/tournaments', async (req, res) => {
+    const tournamentList = await DB.getAllTournaments();
     res.send(tournamentList);
 });
 
@@ -109,7 +113,7 @@ secureApiRouter.post('/tournaments/player', async (req, res) => {
 secureApiRouter.post('/tournaments/score', async (req, res) => {
     const user = await DB.getUser(req.body.email);
     const total = user.totalScore + req.body.recentScore;
-    const parBreaker = null;
+    let parBreaker = null;
     const score = {
         name: user.name,
         total: total,
