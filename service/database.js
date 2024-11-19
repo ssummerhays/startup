@@ -71,10 +71,37 @@ async function createTournament(tournamentName, courseName, city, country, maxPl
         tournamentCollection.insertOne(tournament)
 }
 
-async function updateTournamentScores(tournamentName, score) {
+async function updateTournamentScores(tournamentName, score, parBreaker) {
     const tournament = await getTournament(tournamentName);
     const scores = tournament.scores;
+    const parBreakers = tournament.parBreakers
 
+    let found = false;
+
+    if (parBreaker !== null) {
+        for (let i = 0; i < parBreakers.length; i++) {
+            let currentParBreaker = parBreakers[i];
+            if (currentParBreaker.name === parBreaker.name) {
+                parBreakers[i] = parBreaker;
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            parBreakers.push(parBreaker);
+        }
+        parBreakers.sort((a, b) => b.parBreakers - a.parBreakers);
+
+        const parBreakerFilter = { tournamentName: tournamentName };
+        const parBreakerUpdate = {
+            $set: { parBreakers: parBreakers },
+        };
+
+        await tournamentCollection.update(parBreakerFilter, parBreakerUpdate);
+    }
+
+    found = false;
     for (let i = 0; i < scores.length; i++) {
         let currentScore = scores[i];
         if (currentScore.name === score.name) {
