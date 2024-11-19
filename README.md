@@ -76,3 +76,14 @@ For this deliverable I added backend endpoints that recieve score data, user dat
 - [X] **Calls to third party endpoints** - Leaderboard component calls a 3rd party weather api to get weather info for the city the tournament is in.
 - [x] **Backend service endpoints** - Endpoints for login / user data, and endpoints for tournament data that can be updated or that return data to populate the leaderboards with.
 - [x] **Frontend calls service endpoints** - I did this using the fetch function.
+
+## DB/Login deliverable
+
+For this deliverable I associate a tournament with the logged in user. I stored the userData and tournamentData in the database.
+
+- [x] **MongoDB Atlas database created** - done!
+- [x] **Stores data in MongoDB** - done!
+- [x] **User registration** - Creates a new account in the database.
+- [x] **existing user** - Existing user can update their scores and access their tournament.
+- [x] **Use MongoDB to store credentials** - Stores both user and tournaments. Uses Bcrypt to store a hashed password instead of the direct password
+- [X] **Restricts functionality** - Backend does not allow an unauthenticated user to make certain calls such as posting or getting scores and tournaments.
