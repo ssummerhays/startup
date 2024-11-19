@@ -30,7 +30,7 @@ function getTournament(tournamentName) {
 }
 
 async function createUser(username, email, password) {
-    const passwordHash = bcrypt.hash(password, 10);
+    const passwordHash = await bcrypt.hash(password, 10);
 
     const user = { 
             email: email,
