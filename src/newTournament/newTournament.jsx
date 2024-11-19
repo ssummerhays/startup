@@ -48,8 +48,15 @@ export function NewTournament(props) {
     const body = await response.json();
     
     if (response?.status === 200) {
-      const tournament = body[joinName];
-      if (tournament) {
+      let tournament = null;
+      for (let i = 0; i < body.length; i++) {
+        let current = body[i];
+        if (current.tournamentName == joinName) {
+          tournament = current;
+        }
+      }
+      
+      if (tournament !== null) {
 
         const bodyData = {
           tournamentName: joinName,
@@ -66,8 +73,9 @@ export function NewTournament(props) {
           props.onNewTournament(tournament.tournamentName);
           navigate('/leaderboard');
         } else {
+          console.log(newResponse);
           const body = await newResponse.json();
-          setDisplayError(`Error: ${body.msg}`);
+          setDisplayError(body.msg);
         }
       } else {
         setDisplayError(`Error: no tournament with the name ${joinName} exists`);
