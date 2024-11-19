@@ -96,19 +96,13 @@ apiRouter.get('/tournaments', (req, res) => {
     res.send(tournamentList);
 });
 
-apiRouter.post('/tournaments/player', (req, res) => {
-    const tournament = tournamentList[req.body.tournamentName];
-    const user = users[req.body.email];
-    if (!tournament.players.includes(req.body.email)) {
-        if (tournament.players.length >= tournament.maxPlayers) {
-            res.status(409).send({ msg: "Error: This tournament is full. Please create a new tournament or join a different tournament"});
-        } else if (user.currentTournament === "") {
-                tournament.players.push(req.body.email);
-                user.currentTournament = req.body.tournamentName;
-                res.send({});
-        } else {
-            res.status(409).send({ msg: "Already in a tournament. Finish your current tournament before starting another."})
-        }
+secureApiRouter.post('/tournaments/player', (req, res) => {
+    const result = DB.addPlayer(req.body.tournamentName, req.body.email);
+
+    if (result === "max") {
+        res.status(409).send({ msg: "Error: This tournament is full. Please create a new tournament or join a different tournament"});
+    } else if (result === "finish") {
+        res.status(409).send({ msg: "Already in a tournament. Finish your current tournament before starting another."})
     } else {
         res.send({});
     }
