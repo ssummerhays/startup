@@ -69,6 +69,7 @@ async function createTournament(tournamentName, courseName, city, country, maxPl
 
         await userCollection.updateOne(filter, update);
         tournamentCollection.insertOne(tournament)
+        return tournament
 }
 
 async function updateTournamentScores(tournamentName, score, parBreaker) {
@@ -175,4 +176,15 @@ async function updateUserScores(user, score) {
 
     await userCollection.replaceOne(filter, user);
 
+}
+
+module.exports = {
+    getUser,
+    getUserByToken,
+    getTournament,
+    createUser,
+    createTournament,
+    updateTournamentScores,
+    addPlayer,
+    updateUserScores
 }
