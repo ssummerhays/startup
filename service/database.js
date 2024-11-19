@@ -123,6 +123,12 @@ async function updateTournamentScores(tournamentName, score, parBreaker) {
     };
 
     await tournamentCollection.updateOne(filter, update);
+    const result = {
+        scores: scores,
+        parBreakers: parBreakers
+    }
+
+    return result;
 
 }
 
