@@ -117,6 +117,7 @@ export default function App() {
                     element={
                     <AddScore
                         email={email}
+                        tournamentName={tournamentName}
                         onAddNewScore={async (holeNumber, scoreToPar) => {
                             await getUserData();
                             const newTotalScore = scoreToPar + user.totalScore;

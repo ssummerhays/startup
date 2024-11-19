@@ -10,6 +10,7 @@ export function AddScore(props) {
   const [scoreToPar, setScoreToPar] = React.useState(0);
   const [displayError, setDisplayError] = React.useState(null);
   const [userName, setUserName] = React.useState("");
+  const [user, setUser] = React.useState({});
 
   const navigate = useNavigate();
 
@@ -32,7 +33,7 @@ export function AddScore(props) {
       
       setUserName(user.userName);
       setHoleNumber(parseInt(user.currentHole, 10) + 1);
-      setScoreToPar(user.totalScore);
+      setUser(user);
     }
 
     getUserData();
@@ -90,7 +91,7 @@ export function AddScore(props) {
             </div>
             <div className='buttons'>
               <div>
-                <Button variant='primary' onClick={() => addNewScore(holeNumber, scoreToPar)} disabled={holeNumber < 1 || holeNumber > 18}>Submit</Button>
+                <Button variant='primary' onClick={() => addNewScore(holeNumber, scoreToPar)} disabled={holeNumber < 1 || holeNumber > 18 || user.currentTournament !== props.tournamentName}>Submit</Button>
               <Button variant='secondary' onClick={() => navigate('/leaderboard')}>Return</Button>
               </div>
             </div>
