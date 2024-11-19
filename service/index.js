@@ -108,10 +108,10 @@ secureApiRouter.post('/tournaments/player', (req, res) => {
     }
 })
 
-apiRouter.post('/tournaments/score', (req, res) => {
-    const user = users[req.body.email];
-    const tournament = tournamentList[user.currentTournament];
+secureApiRouter.post('/tournaments/score', (req, res) => {
+    const user = DB.getUser(req.body.email);
     const total = user.totalScore + req.body.recentScore;
+    const parBreaker = null;
     const score = {
         name: user.name,
         total: total,
@@ -120,63 +120,16 @@ apiRouter.post('/tournaments/score', (req, res) => {
     if (parseInt(score.thru, 10) !== parseInt(user.currentHole, 10) + 1) {
         return res.status(409).send({ msg: `Hole is out of order. Please enter a score for hole ${parseInt(user.currentHole, 10) + 1}`})
     }
-    user.recentScore = req.body.recentScore;
-    user.totalScore = score.total;
-    user.thru = req.body.hole;
+
     if (req.body.recentScore < 0) {
-        const parBreaker = {
+        parBreaker = {
             name: user.name,
             parBreakers: user.parBreakers + 1
         }
-        user.parBreakers += 1;
-
-        let found = false;
-        const parBreakers = tournament.parBreakers;
-        for (let i = 0; i < parBreakers.length; i++) {
-            let currentParBreaker = tournament.parBreakers[i];
-            if (currentParBreaker.name === parBreaker.name) {
-                tournament.parBreakers[i] = parBreaker;
-                found = true;
-                break;
-            }
-        }
-    
-        if (!found) {
-            tournament.parBreakers.push(parBreaker);
-        }
-        tournament.parBreakers.sort((a, b) => b.parBreakers - a.parBreakers);
     }
 
-    if (parseInt(req.body.hole, 10) === 18) {
-        score.thru = 'F';
-        user.recentScore = 0;
-        user.totalScore = 0;
-        user.parBreakers = 0;
-        user.currentHole = 0;
-        user.currentTournament = "";
-    }
-
-    let found = false;
-    const scores = tournament.scores;
-    for (let i = 0; i < scores.length; i++) {
-        let currentScore = tournament.scores[i];
-        if (currentScore.name === score.name) {
-            tournament.scores[i] = score;
-            found = true;
-            break;
-        }
-    }
-    if (!found) {
-        tournament.scores.push(score);
-    }
-    tournament.scores.sort((a, b) => a.total - b.total);
-
-    user.currentHole += 1;
-
-    const result = {
-        scores: tournament.scores,
-        parBreakers: tournament.parBreakers,
-    }
+    const result = DB.updateTournamentScores(user.currentTournament, score, parBreaker);
+    DB.updateUserScores(user, score);
 
     res.send(result);
 })
