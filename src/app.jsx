@@ -19,9 +19,6 @@ export default function App() {
 
   const [tournamentName, setTournamentName] = React.useState(localStorage.getItem('tournamentName') || '');
 
-  const [scores, setScores] = React.useState([]);
-  const [parBreakers, setParBreakers] = React.useState([]);
-
   React.useEffect(() => {
     //localStorage.clear();
     const scoresText = localStorage.getItem('scores');
@@ -30,31 +27,39 @@ export default function App() {
     }
   }, []);
 
-  React.useEffect(() => {
-    async function getUserData() {
-      const response = await fetch('/api/users', {
-        method: 'GET',
-        headers: { 'content-type': 'application/json' }
-      });
+  async function getUserData() {
+    const response = await fetch('/api/users', {
+      method: 'GET',
+      headers: { 'content-type': 'application/json' }
+    });
 
-      const body = await response.json();
-      const user = body[props.email];
-      setUser(user);
-    }
+    const body = await response.json();
 
-    getUserData();
-  }, [userName] );
-
-  React.useEffect(() => {
-    const parBreakersText = localStorage.getItem('parBreakers');
-    if (parBreakersText) {
-      try {
-        setParBreakers(JSON.parse(parBreakersText));
-      } catch (error) {
-        console.error(error);
+    let user = null;
+    for (let i = 0; i < body.length; i++) {
+      let current = body[i];
+      if (current.email == email) {
+        user = current;
       }
     }
-  }, []);
+    setUser(user);
+  }
+
+  React.useEffect(() => {
+    getUserData();
+  }, [userName, user.totalScore] );
+
+  async function resetPlayer() {
+    const bodyData = {
+      email: email
+    };
+
+    await fetch('/api/user/reset', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(bodyData)
+    });
+  }
 
   return (
     <BrowserRouter>
@@ -120,13 +125,15 @@ export default function App() {
                     element={
                     <AddScore
                         email={email}
-                        onAddNewScore={(holeNumber, scoreToPar) => {
+                        onAddNewScore={async (holeNumber, scoreToPar) => {
+                            await getUserData();
                             const newTotalScore = scoreToPar + user.totalScore;
 
                             if (holeNumber === 18) {
-                                ScoreNotifier.broadcastEvent(userName, ScoreEvent.roundEnd, holeNumber, scoreToPar, newTotalScore, scores, true, parBreakers);
+                                ScoreNotifier.broadcastEvent(userName, ScoreEvent.roundEnd, holeNumber, scoreToPar, newTotalScore);
+                                resetPlayer();
                             } else {
-                                ScoreNotifier.broadcastEvent(userName, ScoreEvent.holeEnd, holeNumber, scoreToPar, newTotalScore, scores, true, parBreakers);
+                                ScoreNotifier.broadcastEvent(userName, ScoreEvent.holeEnd, holeNumber, scoreToPar, newTotalScore);
                             }
                         }}
                     />
