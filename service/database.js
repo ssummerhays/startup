@@ -21,12 +21,20 @@ function getUser(email) {
     return userCollection.findOne({ email: email });
 }
 
+function getAllUsers() {
+    return userCollection.find({});
+}
+
 function getUserByToken(token) {
     return userCollection.findOne({ token: token });
 }
 
 function getTournament(tournamentName) {
     return tournamentCollection.findOne({ tournamentName: tournamentName });
+}
+
+function getAllTournaments() {
+    return tournamentCollection.find({});
 }
 
 async function createUser(username, email, password) {
@@ -186,8 +194,10 @@ async function updateUserScores(user, score) {
 
 module.exports = {
     getUser,
+    getAllUsers,
     getUserByToken,
     getTournament,
+    getAllTournaments,
     createUser,
     createTournament,
     updateTournamentScores,
