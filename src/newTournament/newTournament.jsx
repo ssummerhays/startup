@@ -73,7 +73,6 @@ export function NewTournament(props) {
           props.onNewTournament(tournament.tournamentName);
           navigate('/leaderboard');
         } else {
-          console.log(newResponse);
           const body = await newResponse.json();
           setDisplayError(body.msg);
         }
