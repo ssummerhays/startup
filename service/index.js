@@ -1,6 +1,10 @@
+const cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
 const express = require('express');
-const uuid = require('uuid');
 const app = express();
+const DB = require('./database.js');
+
+const authCookieName = 'token';
 
 let users = {};
 let tournamentList = {};
@@ -9,7 +13,11 @@ const port = process.argv.length > 2 ? process.argv[2] : 4000;
 
 app.use(express.json());
 
+app.use(cookieParser());
+
 app.use(express.static('public'));
+
+app.set('trust proxy', true);
 
 var apiRouter = express.Router();
 app.use(`/api`, apiRouter);
@@ -56,40 +64,41 @@ apiRouter.delete('/auth/logout', (req, res) => {
     res.status(204).end();
 });
 
+const secureApiRouter = express.Router();
+apiRouter.use(secureApiRouter);
+
+secureApiRouter.use(async (req, res, next) => {
+  const authToken = req.cookies[authCookieName];
+  const user = await DB.getUserByToken(authToken);
+  if (user) {
+    next();
+  } else {
+    res.status(401).send({ msg: 'Unauthorized' });
+  }
+});
+
 apiRouter.get('/users', (req, res) => {
     res.send(users);
 });
 
-apiRouter.post('/tournaments/create', (req, res) => {
-    const tournament = tournamentList[req.body.tournamentName];
-    const user = users[req.body.email];
+secureApiRouter.post('/tournaments/create', (req, res) => {
+    const tournament = DB.getTournament(req.body.tournamentName);
+    const user = DB.getUser(req.body.email);
     if (tournament) {
         res.status(409).send({ msg: "existing tournament name" });
     } else {
-        const tournament = {
-            tournamentName: req.body.tournamentName,
-            courseName: req.body.courseName,
-            city: req.body.city,
-            country: req.body.country,
-            maxPlayers: req.body.maxPlayers,
-            players: [],
-            scores: [],
-            parBreakers: []
-        };
-
-        if (!tournament.players.includes(req.body.email)) {
-            if (tournament.players.length === tournament.maxPlayers) {
-                res.status(409).send({ msg: "Error: This tournament is full. Please create a new tournament or join a different tournament"});
-            } else if (user.currentTournament === "") {
-                tournament.players.push(req.body.email);
-                user.currentTournament = req.body.tournamentName;
-                tournamentList[req.body.tournamentName] = tournament;
-                res.send(tournament);
-            } else {
-                res.status(409).send({ msg: "Already in a tournament. Finish your current tournament before starting another."})
-            }
-        } else {
+        if (user.currentTournament === "") {
+            const tournament = DB.createTournament(
+                req.body.tournamentName, 
+                req.body.courseName, 
+                req.body.city, 
+                req.body.country, 
+                req.body.maxPlayers, 
+                req.body.email
+            );
             res.send(tournament);
+        } else {
+            res.status(409).send({ msg: "Already in a tournament. Finish your current tournament before starting another."})
         }
     }
 });
