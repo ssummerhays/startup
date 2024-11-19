@@ -21,7 +21,15 @@ export function AddScore(props) {
       });
 
       const body = await response.json();
-      const user = body[props.email];
+      
+      let user = null;
+      for (let i = 0; i < body.length; i++) {
+        let current = body[i];
+        if (current.email == props.email) {
+          user = current;
+        }
+      }
+      
       setUserName(user.userName);
       setHoleNumber(parseInt(user.currentHole, 10) + 1);
       setScoreToPar(user.totalScore);
