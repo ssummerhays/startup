@@ -125,6 +125,31 @@ async function updateTournamentScores(tournamentName, score, parBreaker) {
 
 }
 
+async function addPlayer(tournamentName, email) {
+    const tournament = getTournament(tournamentName);
+    const player = getUser(email);
+
+    if (!tournament.players.includes(email)) {
+        if (tournament.players.length >= tournament.maxPlayers) {
+            return "max";
+        } else if (user.currentTournament === "") {
+                tournament.players.push(email);
+                player.currentTournament = tournamentName;
+
+                const filterTournament = { tournamentName: tournamentName };
+                await tournamentCollection.replaceOne(filterTournament, tournament);
+
+                const filterUser = { email: email };
+                await userCollection.replaceOne(filterUser, player);
+                return "success";
+        } else {
+            return "finish";
+        }
+    } else {
+        return "success";
+    }
+}
+
 async function updateUserScores(user, score) {
     const totalBefore = user.totalScore;
     const newTotal = score.total;
