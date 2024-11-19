@@ -70,3 +70,30 @@ async function createTournament(tournamentName, courseName, city, country, maxPl
         await userCollection.update(filter, update);
         tournamentCollection.insertOne(tournament)
 }
+
+async function updateTournamentScores(tournamentName, score) {
+    const tournament = await getTournament(tournamentName);
+    const scores = tournament.scores;
+
+    for (let i = 0; i < scores.length; i++) {
+        let currentScore = scores[i];
+        if (currentScore.name === score.name) {
+            scores[i] = score;
+            found = true;
+            break;
+        }
+    }
+    if (!found) {
+        scores.push(score);
+    }
+    scores.sort((a, b) => a.total - b.total);
+
+    const filter = { tournamentName: tournamentName };
+
+    const update = {
+        $set: { scores: scores },
+    };
+
+    await tournamentCollection.update(filter, update);
+
+}
