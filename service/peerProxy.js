@@ -13,12 +13,24 @@ function peerProxy(httpServer) {
     let connections = [];
 
     wss.on('connection', (ws) => {
-        const connection = { id: uuid.v4(), alive: true, ws: ws };
+        const connection = { id: uuid.v4(), tournament: null, alive: true, ws: ws };
+
+        wss.on('message', (data) => {
+            try {
+                const message = JSON.parse(data);
+                if (message.tournament) {
+                    connection.tournament = message.tournament;
+                }
+            } catch (err) {
+                //Message does not contain tournament
+            }
+        });
+        
         connections.push(connection);
 
         wss.on('message', function message(data) {
             connections.forEach((c) => {
-                if (c.id !== connection.id) {
+                if (c.tournament === connection.tournament && c.id !== connection.id) {
                     c.ws.send(data);
                 }
             });
