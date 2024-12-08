@@ -123,10 +123,10 @@ export default function App() {
                             const newTotalScore = scoreToPar + user.totalScore;
 
                             if (holeNumber === 18) {
-                                ScoreNotifier.broadcastEvent(userName, ScoreEvent.roundEnd, holeNumber, scoreToPar, newTotalScore);
+                                ScoreNotifier.broadcastEvent(userName, ScoreEvent.roundEnd, holeNumber, scoreToPar, newTotalScore, tournamentName);
                                 resetPlayer();
                             } else {
-                                ScoreNotifier.broadcastEvent(userName, ScoreEvent.holeEnd, holeNumber, scoreToPar, newTotalScore);
+                                ScoreNotifier.broadcastEvent(userName, ScoreEvent.holeEnd, holeNumber, scoreToPar, newTotalScore, tournamentName);
                             }
                         }}
                     />
