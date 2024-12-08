@@ -4,12 +4,13 @@ const ScoreEvent = {
 };
 
 class EventMessage {
-  constructor(from, type, hole, score, totalScore) {
+  constructor(from, type, hole, score, totalScore, tournamentName) {
     this.from = from;
     this.type = type;
     this.hole = hole;
     this.score = score;
     this.totalScore = totalScore;
+    this.tournamentName = tournamentName;
   }
 }
 
@@ -20,26 +21,25 @@ class ScoreEventNotifier {
   totalScore = 0;
 
   constructor() {
-    // Simulate chat messages that will eventually come over WebSocket
-    setInterval(() => {
-      const score = Math.floor(Math.random() * 7 - 2);
-      this.totalScore += score;
-      
-      const userName = 'Fake User';
-      if (this.holeNumber === 18) {
-        this.broadcastEvent(userName, ScoreEvent.roundEnd, this.holeNumber, score, this.totalScore);
-        this.holeNumber = 1;
-        this.totalScore = 0;
-      } else {
-        this.broadcastEvent(userName, ScoreEvent.holeEnd, this.holeNumber, score, this.totalScore);
-        this.holeNumber += 1;
-      }
-    }, 5000);
+    let port = window.location.port;
+    const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+    this.socket = new WebSocket(`${protocol}://${window.location.hostname}:${port}/ws`);
+    this.socket.onopen = (event) => {
+      const message = JSON.stringify({ tournamentName: event.tournamentName });
+      this.socket.send(message);
+    }
+    this.socket.onclose = (event) => {}
+    this.socket.onmessage = async (msg) => {
+      try {
+        const event = JSON.parse(await msg.data.text());
+        this.receiveEvent(event);
+      } catch {}
+    };
   }
 
-  broadcastEvent(from, type, hole, score, totalScore) {
-    const event = new EventMessage(from, type, hole, score, totalScore);
-    this.receiveEvent(event);
+  broadcastEvent(from, type, hole, score, totalScore, tournamentName) {
+    const event = new EventMessage(from, type, hole, score, totalScore, tournamentName);
+    this.socket.send(JSON.stringify(event));
   }
 
   addHandler(handler) {
