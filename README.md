@@ -87,3 +87,12 @@ For this deliverable I associate a tournament with the logged in user. I stored 
 - [x] **existing user** - Existing user can update their scores and access their tournament.
 - [x] **Use MongoDB to store credentials** - Stores both user and tournaments. Uses Bcrypt to store a hashed password instead of the direct password
 - [X] **Restricts functionality** - Backend does not allow an unauthenticated user to make certain calls such as posting or getting scores and tournaments.
+
+## WebSocket deliverable
+
+For this deliverable I used webSocket to update the recent scores on the frontend in realtime.
+
+- [x] **Backend listens for WebSocket connection** - done!
+- [x] **Frontend makes WebSocket connection** - done!
+- [x] **Data sent over WebSocket connection** - done!
+- [x] **WebSocket data displayed** - All recent scores display in realtime.
